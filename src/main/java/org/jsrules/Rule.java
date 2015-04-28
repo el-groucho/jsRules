@@ -16,6 +16,7 @@ public class Rule<T> {
     
     private T result;
     private Map<String, Class> parameters;
+    private Operator operator;
 
     public T getResult() {
         return result;
@@ -32,5 +33,12 @@ public class Rule<T> {
     public void setParameters(Map<String, Class> parameters) {
         this.parameters = parameters;
     }
-   
+
+    public Operator getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Operator operator) {
+        this.operator = operator;
+    }
 }
