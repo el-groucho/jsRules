@@ -4,6 +4,33 @@
     <groupId>org.grouchotools</groupId>
     <artifactId>jsRules</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>A simple JSON-based rules engine.</description>
+    <url>https://github.com/el-groucho/jsRules</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Paul Richardson</name>
+            <email>grroucho@gmail.com</email>
+            <organization>grouchotools</organization>
+            <organizationUrl>https://github.com/el-groucho</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:el-groucho/jsRules.git</connection>
+        <developerConnection>scm:git:git@github.com:el-groucho/jsRules.git</developerConnection>
+        <url>git@github.com:el-groucho/jsRules.git</url>
+    </scm>
+
     <packaging>jar</packaging>
     <dependencies>
         
