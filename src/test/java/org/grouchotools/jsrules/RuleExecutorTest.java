@@ -5,22 +5,19 @@
  */
 package org.grouchotools.jsrules;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.grouchotools.jsrules.exception.InvalidParameterException;
 import org.grouchotools.jsrules.impl.RuleExecutorImpl;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 /**
  *
@@ -157,4 +154,39 @@ public class RuleExecutorTest {
         
         executor.execute(10l, "invalid");
     }
+
+    @Test
+    public void executeRuleStatic() throws Exception {
+        String responseMock = "Left is less than right!";
+
+        Parameter<Long> rightStaticParameterMock = new Parameter<>("right", Long.class, 20l);
+        when(ruleMock.getRightParameter()).thenReturn(rightStaticParameterMock);
+
+        when(ruleMock.getResponse()).thenReturn(responseMock);
+        when(ruleMock.getOperator()).thenReturn(Operator.LT);
+
+        assertEquals(responseMock, executor.execute(10l));
+        assertNull(executor.execute(20l));
+        assertNull(executor.execute(25l));
+    }
+
+    @Test
+    public void executeRuleStaticExtraParameter() throws Exception {
+        exception.expect(InvalidParameterException.class);
+
+        Parameter<Long> rightStaticParameterMock = new Parameter<>("right", Long.class, 20l);
+        when(ruleMock.getRightParameter()).thenReturn(rightStaticParameterMock);
+
+        when(ruleMock.getOperator()).thenReturn(Operator.LT);
+
+        executor.execute(10l, 20l);
+    }
+
+    @Test
+    public void executeRuleStaticMissingParameter() throws Exception {
+        exception.expect(InvalidParameterException.class);
+
+        executor.execute(10l);
+    }
+
 }

@@ -9,21 +9,32 @@ package org.grouchotools.jsrules;
  *
  * @author Paul
  */
-public class Parameter {
-    public Parameter(String name, Class klasse) {
+public class Parameter<T> {
+    public Parameter(String name, Class<T> klasse) {
         this.name = name;
         this.klasse = klasse;
+        this.staticValue = null;
+    }
+
+    public Parameter(String name, Class<T> klasse, T staticValue) {
+        this.name = name;
+        this.klasse = klasse;
+        this.staticValue = staticValue;
     }
     
     private final String name;
-    private final Class klasse;
+    private final Class<T> klasse;
+    private final T staticValue;
 
     public String getName() {
         return name;
     }
 
-    public Class getKlasse() {
+    public Class<T> getKlasse() {
         return klasse;
     }
 
+    public T getStaticValue() {
+        return staticValue;
+    }
 }

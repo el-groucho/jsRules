@@ -5,8 +5,9 @@
  */
 package org.grouchotools.jsrules;
 
-import java.util.Map;
 import org.grouchotools.jsrules.exception.InvalidParameterException;
+
+import java.util.Map;
 
 /**
  *
@@ -17,4 +18,6 @@ public interface RuleExecutor<T> {
     T execute(Map<String, Object> parameters) throws InvalidParameterException;
     
     T execute(Object leftParameter, Object rightParameter) throws InvalidParameterException;
+
+    T execute(Object leftParameter) throws InvalidParameterException;
 }
