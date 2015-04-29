@@ -28,14 +28,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class RuleExecutorTest {
     
-    private RuleExecutor<Boolean> executor;
-    private Boolean resultMock;
+    private RuleExecutor<String> executor;
+    private String resultMock;
     
     @org.junit.Rule
     public ExpectedException exception= ExpectedException.none();
     
     @Mock
-    Rule<Boolean> ruleMock;
+    Rule<String> ruleMock;
     
     @BeforeClass
     public static void setUpClass() {
@@ -48,8 +48,14 @@ public class RuleExecutorTest {
     @Before
     public void setUp() {
         executor = new RuleExecutorImpl<>(ruleMock);
-        resultMock = true;
+        resultMock = "mock";
         when(ruleMock.getResult()).thenReturn(resultMock);
+        
+        Parameter leftParameterMock = new Parameter("left", Long.class);
+        when(ruleMock.getLeftParameter()).thenReturn(leftParameterMock);
+        
+        Parameter rightParameterMock = new Parameter("right", Long.class);
+        when(ruleMock.getRightParameter()).thenReturn(rightParameterMock);
     }
     
     @After
@@ -64,9 +70,8 @@ public class RuleExecutorTest {
     @Test
     public void executeRuleTest() throws Exception {
         Map<String, Object> parameters = new HashMap<>();
-        Boolean result = executor.execute(parameters);
         
-        assertEquals(resultMock, result);
+        assertEquals(resultMock, executor.execute(parameters));
     }
     
     @Test
@@ -124,5 +129,31 @@ public class RuleExecutorTest {
         parameters.put("name", "Bob");
         
         assertEquals(resultMock, executor.execute(parameters));
+    }
+    
+    @Test
+    public void executeRuleBasic() throws Exception {
+        String responseMock = "Left is greater than right!";
+        
+        when(ruleMock.getResponse()).thenReturn(responseMock);        
+        when(ruleMock.getOperator()).thenReturn(Operator.GT);
+        
+        assertEquals(responseMock, executor.execute(10l, 5l));
+        assertNull(executor.execute(5l, 10l));
+        assertNull(executor.execute(5l, 5l));        
+    }
+    
+    @Test
+    public void executeRuleInvalidLeftParameter() throws Exception {
+        exception.expect(InvalidParameterException.class);
+        
+        executor.execute("invalid", 5l);
+    }
+    
+    @Test
+    public void executeRuleInvalidRightParameter() throws Exception {
+        exception.expect(InvalidParameterException.class);
+        
+        executor.execute(10l, "invalid");
     }
 }

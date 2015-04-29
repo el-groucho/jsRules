@@ -13,5 +13,8 @@ import org.jsrules.exception.InvalidParameterException;
  * @author Paul
  */
 public interface RuleExecutor<T> {
+    @Deprecated //TODO move to ruleset before deleting
     T execute(Map<String, Object> parameters) throws InvalidParameterException;
+    
+    T execute(Object leftParameter, Object rightParameter) throws InvalidParameterException;
 }
