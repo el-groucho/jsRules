@@ -23,34 +23,39 @@
  */
 package org.grouchotools.jsrules;
 
+import org.grouchotools.jsrules.exception.InvalidParameterException;
+import org.grouchotools.jsrules.impl.AllTrueRulesetExecutorImpl;
+import org.grouchotools.jsrules.impl.RuleExecutorImpl;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.grouchotools.jsrules.exception.InvalidParameterException;
-import org.grouchotools.jsrules.impl.AllTrueRulesetExecutorImpl;
-import org.grouchotools.jsrules.impl.RuleExecutorImpl;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 /**
  *
  * @author Paul
  */
+@RunWith(MockitoJUnitRunner.class)
 public class AllTrueRulesetExecutorTest {
     private RulesetExecutor<String> executor;
-    private String responseMock;
+    private String responseMock = "mock";
 
     @org.junit.Rule
     public ExpectedException exception= ExpectedException.none();
-    
+
+    @Mock
+    Rule<String> ruleMock;
+
     private List<RuleExecutor> ruleListMock;
     
     @BeforeClass
@@ -81,14 +86,13 @@ public class AllTrueRulesetExecutorTest {
     @Test
     public void executeRulesetInvalidParametersTest() throws Exception {
         exception.expect(InvalidParameterException.class);
-        
-        Rule ruleMock = Mockito.mock(Rule.class);
-        when(ruleMock.getLeftParameter()).thenReturn(new Parameter("left", 
+
+        when(ruleMock.getLeftParameter()).thenReturn(new Parameter<>("left",
                 Long.class));
-        when(ruleMock.getRightParameter()).thenReturn(new Parameter("right", 
+        when(ruleMock.getRightParameter()).thenReturn(new Parameter<>("right",
                 Long.class));
-        
-        RuleExecutor ruleExecutorMock = new RuleExecutorImpl(ruleMock);
+
+        RuleExecutor<String> ruleExecutorMock = new RuleExecutorImpl<>(ruleMock);
         ruleListMock.add(ruleExecutorMock);
                         
         Map<String, Object> parameters = new HashMap<>();
@@ -101,14 +105,13 @@ public class AllTrueRulesetExecutorTest {
     @Test
     public void executeRulesetMissingParametersTest() throws Exception {
         exception.expect(InvalidParameterException.class);
-        
-        Rule ruleMock = Mockito.mock(Rule.class);
-        when(ruleMock.getLeftParameter()).thenReturn(new Parameter("left", 
+
+        when(ruleMock.getLeftParameter()).thenReturn(new Parameter<>("left",
                 Long.class));
-        when(ruleMock.getRightParameter()).thenReturn(new Parameter("right", 
+        when(ruleMock.getRightParameter()).thenReturn(new Parameter<>("right",
                 Long.class));
-        
-        RuleExecutor ruleExecutorMock = new RuleExecutorImpl(ruleMock);
+
+        RuleExecutor<String> ruleExecutorMock = new RuleExecutorImpl<>(ruleMock);
         ruleListMock.add(ruleExecutorMock);
                         
         Map<String, Object> parameters = new HashMap<>();
@@ -119,15 +122,16 @@ public class AllTrueRulesetExecutorTest {
     }
     
     @Test
-    public void executeRulesetValidParametersTest() throws Exception {       
-        Rule ruleMock = Mockito.mock(Rule.class);
-        when(ruleMock.getLeftParameter()).thenReturn(new Parameter("left", 
+    public void executeRulesetValidParametersTest() throws Exception {
+
+        when(ruleMock.getLeftParameter()).thenReturn(new Parameter<>("left",
                 Long.class));
         when(ruleMock.getOperator()).thenReturn(Operator.GT);
-        when(ruleMock.getRightParameter()).thenReturn(new Parameter("right", 
+        when(ruleMock.getRightParameter()).thenReturn(new Parameter<>("right",
                 Long.class));
-        
-        RuleExecutor ruleExecutorMock = new RuleExecutorImpl(ruleMock);
+        when(ruleMock.getResponse()).thenReturn("Left is greater than right");
+
+        RuleExecutor<String> ruleExecutorMock = new RuleExecutorImpl<>(ruleMock);
         ruleListMock.add(ruleExecutorMock);
                         
         Map<String, Object> parameters = new HashMap<>();
@@ -135,21 +139,25 @@ public class AllTrueRulesetExecutorTest {
         parameters.put("right", 10l);
         
         assertEquals(responseMock, executor.execute(parameters));
-        
-        //TODO add equal assertion (should return null)
-        //TODO add less than assertion (should return null)
+
+        parameters.put("left", 10l);
+        assertNull(executor.execute(parameters));
+
+        parameters.put("left", 5l);
+        assertNull(executor.execute(parameters));
     }
     
     @Test
-    public void executeRulesetExtraParameterTest() throws Exception {       
-        Rule ruleMock = Mockito.mock(Rule.class);
-        when(ruleMock.getLeftParameter()).thenReturn(new Parameter("left", 
+    public void executeRulesetExtraParameterTest() throws Exception {
+
+        when(ruleMock.getLeftParameter()).thenReturn(new Parameter<>("left",
                 Long.class));
         when(ruleMock.getOperator()).thenReturn(Operator.GT);
-        when(ruleMock.getRightParameter()).thenReturn(new Parameter("right", 
+        when(ruleMock.getRightParameter()).thenReturn(new Parameter<>("right",
                 Long.class));
-        
-        RuleExecutor ruleExecutorMock = new RuleExecutorImpl(ruleMock);
+        when(ruleMock.getResponse()).thenReturn("Left is greater than right");
+
+        RuleExecutor<String> ruleExecutorMock = new RuleExecutorImpl<>(ruleMock);
         ruleListMock.add(ruleExecutorMock);
                         
         Map<String, Object> parameters = new HashMap<>();

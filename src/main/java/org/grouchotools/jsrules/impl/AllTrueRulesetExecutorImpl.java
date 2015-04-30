@@ -23,11 +23,12 @@
  */
 package org.grouchotools.jsrules.impl;
 
-import java.util.List;
-import java.util.Map;
 import org.grouchotools.jsrules.RuleExecutor;
 import org.grouchotools.jsrules.RulesetExecutor;
 import org.grouchotools.jsrules.exception.InvalidParameterException;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * This executor evaluates a series of rules in order.
@@ -49,10 +50,16 @@ public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
     
     @Override
     public T execute(Map<String, Object> parameters) throws InvalidParameterException {
+        T result = response;
         for(RuleExecutor rule:ruleSet) {
-            rule.execute(parameters.get(rule.getLeftParameterName()), parameters.get(rule.getRightParameterName()));
+            Object leftParameter = parameters.get(rule.getLeftParameterName());
+            Object rightParameter = parameters.get(rule.getRightParameterName());
+            // failed rule checks return null
+            if (rule.execute(leftParameter, rightParameter) == null) {
+                result = null;
+            }
         }
-        return response;
+        return result;
     }
     
 }
