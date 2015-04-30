@@ -52,8 +52,8 @@ public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
     public T execute(Map<String, Object> parameters) throws InvalidParameterException {
         T result = response;
         for(RuleExecutor rule:ruleSet) {
-            Object leftParameter = parameters.get(rule.getLeftParameterName());
-            Object rightParameter = parameters.get(rule.getRightParameterName());
+            Object leftParameter = parameters.get(rule.getLeftParameter().getName());
+            Object rightParameter = parameters.get(rule.getRightParameter().getName());
             // failed rule checks return null
             if (rule.execute(leftParameter, rightParameter) == null) {
                 result = null;
