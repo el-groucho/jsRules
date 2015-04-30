@@ -13,11 +13,12 @@ import java.util.Map;
  *
  * @author Paul
  */
-public interface RuleExecutor<T> {
-    @Deprecated //TODO move to ruleset before deleting
-    T execute(Map<String, Object> parameters) throws InvalidParameterException;
-    
+public interface RuleExecutor<T> {    
     T execute(Object leftParameter, Object rightParameter) throws InvalidParameterException;
 
     T execute(Object leftParameter) throws InvalidParameterException;
+    
+    String getLeftParameterName();
+    
+    String getRightParameterName();
 }

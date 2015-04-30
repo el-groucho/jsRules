@@ -13,9 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +24,6 @@ import static org.mockito.Mockito.when;
 public class RuleExecutorTest {
     
     private RuleExecutor<String> executor;
-    private String resultMock;
     
     @org.junit.Rule
     public ExpectedException exception= ExpectedException.none();
@@ -46,8 +42,6 @@ public class RuleExecutorTest {
     @Before
     public void setUp() {
         executor = new RuleExecutorImpl<>(ruleMock);
-        resultMock = "mock";
-        when(ruleMock.getResult()).thenReturn(resultMock);
         
         Parameter leftParameterMock = new Parameter("left", Long.class);
         when(ruleMock.getLeftParameter()).thenReturn(leftParameterMock);
@@ -64,71 +58,7 @@ public class RuleExecutorTest {
     public void instantiateWithRuleTest() {     
         assertNotNull(executor);
     }
-    
-    @Test
-    public void executeRuleTest() throws Exception {
-        Map<String, Object> parameters = new HashMap<>();
         
-        assertEquals(resultMock, executor.execute(parameters));
-    }
-    
-    @Test
-    public void executeRuleInvalidParametersTest() throws Exception {
-        exception.expect(InvalidParameterException.class);
-                
-        Map<String, Class> ruleMockParameters = new HashMap<>();
-        ruleMockParameters.put("age", Long.class);
-        
-        when(ruleMock.getParameters()).thenReturn(ruleMockParameters);
-        
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("age", "21");
-        
-        executor.execute(parameters);
-    }
-    
-    @Test
-    public void executeRuleMissingParametersTest() throws Exception {
-        exception.expect(InvalidParameterException.class);
-                
-        Map<String, Class> ruleMockParameters = new HashMap<>();
-        ruleMockParameters.put("age", Long.class);
-        
-        when(ruleMock.getParameters()).thenReturn(ruleMockParameters);
-        
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("name", "Bob");
-        
-        executor.execute(parameters);
-    }
-    
-    @Test
-    public void executeRuleValidParametersTest() throws Exception {
-        Map<String, Class> ruleMockParameters = new HashMap<>();
-        ruleMockParameters.put("age", Long.class);
-        
-        when(ruleMock.getParameters()).thenReturn(ruleMockParameters);
-        
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("age", 21l);
-        
-        assertEquals(resultMock, executor.execute(parameters));
-    }
-    
-    @Test
-    public void executeRuleExtraParameterTest() throws Exception {
-        Map<String, Class> ruleMockParameters = new HashMap<>();
-        ruleMockParameters.put("age", Long.class);
-        
-        when(ruleMock.getParameters()).thenReturn(ruleMockParameters);
-        
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("age", 21l);
-        parameters.put("name", "Bob");
-        
-        assertEquals(resultMock, executor.execute(parameters));
-    }
-    
     @Test
     public void executeRuleBasic() throws Exception {
         String responseMock = "Left is greater than right!";

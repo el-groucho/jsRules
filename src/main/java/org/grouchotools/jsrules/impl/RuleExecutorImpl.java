@@ -27,15 +27,6 @@ public class RuleExecutorImpl<T> implements RuleExecutor<T> {
     public RuleExecutorImpl(Rule<T> rule) {
         this.rule = rule;
     }
-
-    @Override
-    public T execute(Map<String, Object> parameters) throws InvalidParameterException {
-        if (!validateParameters(parameters)) {
-            throw new InvalidParameterException();
-        }
-        
-        return rule.getResult();
-    }
     
     @Override
     public T execute(Object leftParameter, Object rightParameter) throws InvalidParameterException {
@@ -76,31 +67,16 @@ public class RuleExecutorImpl<T> implements RuleExecutor<T> {
 
         return response;
     }
-
+    
     /**
-     * Validate that all expected parameters are present and are instances of the
-     * correct class.
+     * Validate that parameter is present and is an instance of the correct 
+     * class
      * 
-     * Extraneous parameters are ignored
-     * 
-     * @param parameters
+     * @param key
+     * @param parameter
+     * @param expectedClass
      * @return 
      */
-    @Deprecated //TODO move to ruleset level
-    private boolean validateParameters(Map<String,Object> parameters) {      
-        boolean valid = true;
-                
-        for(Entry<String, Class> entry:rule.getParameters().entrySet()) {
-            String key = entry.getKey();
-            Object parameter = parameters.get(key);
-            Class expectedClass = entry.getValue();
-            valid = validateParameter(key, parameter, expectedClass);
-        }
-        
-        return valid;
-    }
-    
-    //TODO move to a common utility?
     private boolean validateParameter(String key, Object parameter, Class expectedClass) {
         boolean valid = true;
 
@@ -114,6 +90,16 @@ public class RuleExecutorImpl<T> implements RuleExecutor<T> {
         }
 
         return valid;
+    }
+
+    @Override
+    public String getLeftParameterName() {
+        return rule.getLeftParameter().getName();
+    }
+
+    @Override
+    public String getRightParameterName() {
+        return rule.getRightParameter().getName();
     }
     
 }
