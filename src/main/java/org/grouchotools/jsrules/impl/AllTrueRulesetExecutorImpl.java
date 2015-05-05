@@ -57,6 +57,7 @@ public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
             // failed rule checks return null
             if (rule.execute(leftParameter, rightParameter) == null) {
                 result = null;
+                break;
             }
         }
         return result;

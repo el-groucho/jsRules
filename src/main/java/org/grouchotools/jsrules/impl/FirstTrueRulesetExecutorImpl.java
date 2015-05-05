@@ -65,7 +65,7 @@ public class FirstTrueRulesetExecutorImpl<T> extends Executor implements Ruleset
 
             // if the rule is true, return its response and stop processing
             T ruleResponse = rule.execute(leftParameter, rightParameter);
-            if (rule.execute(leftParameter, rightParameter) != null) {
+            if (null != ruleResponse) {
                 result = ruleResponse;
                 break;
             }
