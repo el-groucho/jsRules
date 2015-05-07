@@ -39,6 +39,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -166,5 +167,32 @@ public class AllTrueRulesetExecutorTest {
         parameters.put("name", "Bob");
         
         assertEquals(responseMock, executor.execute(parameters));
+    }
+
+    @Test
+    public void executeRulesetStaticParameterTest() throws Exception {
+        Long left = 21l;
+        Long right = 10l;
+        Long staticRight = 5l;
+
+        String leftName = "left";
+        String rightName = "right";
+
+        RuleExecutor ruleExecutorMock = mock(RuleExecutor.class);
+
+        when(ruleExecutorMock.getLeftParameter()).thenReturn(new Parameter<>(leftName, Long.class));
+        when(ruleExecutorMock.getRightParameter()).thenReturn(new Parameter<>(rightName, Long.class, staticRight));
+        when(ruleExecutorMock.execute(left)).thenReturn(responseMock);
+
+        ruleListMock.add(ruleExecutorMock);
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put(leftName, left);
+        parameters.put(rightName, right);
+
+        assertEquals(responseMock, executor.execute(parameters));
+
+        parameters.put(leftName, 20l);
+        assertNull(executor.execute(parameters));
     }
 }

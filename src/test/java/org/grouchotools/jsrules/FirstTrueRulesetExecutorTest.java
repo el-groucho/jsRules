@@ -165,10 +165,32 @@ public class FirstTrueRulesetExecutorTest {
         when(ruleExecutorMock1.execute(left, right)).thenReturn(responseMock);
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("left", 21l);
-        parameters.put("right", 10l);
+        parameters.put("left", left);
+        parameters.put("right", right);
         parameters.put("name", "Bob");
 
         assertEquals(responseMock, executor.execute(parameters));
+    }
+
+    @Test
+    public void executeRulesetStaticParameterTest() throws Exception {
+        Long left = 21l;
+        Long differentLeft = 20l;
+        Long right = 10l;
+        Long staticRight = 5l;
+
+        String responseMock = "executeRulesetStaticParameterTest";
+
+        when(ruleExecutorMock1.getRightParameter()).thenReturn(new Parameter<>(rightName, Long.class, staticRight));
+        when(ruleExecutorMock1.execute(left)).thenReturn(responseMock);
+
+        Map<String, Object> parameters = new HashMap<>();
+
+        parameters.put("left", left);
+        parameters.put("right", right);
+        assertEquals(responseMock, executor.execute(parameters));
+
+        parameters.put("left", differentLeft);
+        assertNull(executor.execute(parameters));
     }
 }

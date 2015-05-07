@@ -59,12 +59,23 @@ public class FirstTrueRulesetExecutorImpl<T> extends Executor implements Ruleset
             validateParameter(leftName, leftParameter, left.getKlasse());
 
             Parameter right = rule.getRightParameter();
-            String rightName = right.getName();
-            Object rightParameter = parameters.get(rightName);
-            validateParameter(rightName, rightParameter, right.getKlasse());
 
-            // if the rule is true, return its response and stop processing
-            T ruleResponse = rule.execute(leftParameter, rightParameter);
+            T ruleResponse;
+
+            if (right.getStaticValue() == null) {
+                //send both parameters
+                String rightName = right.getName();
+                Object rightParameter = parameters.get(rightName);
+                validateParameter(rightName, rightParameter, right.getKlasse());
+
+                ruleResponse = rule.execute(leftParameter, rightParameter);
+
+            } else {
+                //send left parameter only
+                ruleResponse = rule.execute(leftParameter);
+            }
+
+            // if the rule is true, send its response and stop processing
             if (null != ruleResponse) {
                 result = ruleResponse;
                 break;

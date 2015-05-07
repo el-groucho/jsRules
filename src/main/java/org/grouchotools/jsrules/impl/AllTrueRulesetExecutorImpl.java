@@ -23,6 +23,7 @@
  */
 package org.grouchotools.jsrules.impl;
 
+import org.grouchotools.jsrules.Parameter;
 import org.grouchotools.jsrules.RuleExecutor;
 import org.grouchotools.jsrules.RulesetExecutor;
 import org.grouchotools.jsrules.exception.InvalidParameterException;
@@ -52,12 +53,22 @@ public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
     public T execute(Map<String, Object> parameters) throws InvalidParameterException {
         T result = response;
         for(RuleExecutor rule:ruleSet) {
+            Parameter ruleParamRight = rule.getRightParameter();
             Object leftParameter = parameters.get(rule.getLeftParameter().getName());
-            Object rightParameter = parameters.get(rule.getRightParameter().getName());
-            // failed rule checks return null
-            if (rule.execute(leftParameter, rightParameter) == null) {
-                result = null;
-                break;
+            Object rightParameter = parameters.get(ruleParamRight.getName());
+
+            if (ruleParamRight.getStaticValue() == null) {
+                // check both parameters --failed rule checks return null
+                if (rule.execute(leftParameter, rightParameter) == null) {
+                    result = null;
+                    break;
+                }
+            } else {
+                // check left parameter only -- failed rule checks return null
+                if (rule.execute(leftParameter) == null) {
+                    result = null;
+                    break;
+                }
             }
         }
         return result;
