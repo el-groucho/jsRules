@@ -6,13 +6,15 @@
 package org.grouchotools.jsrules;
 
 import org.grouchotools.jsrules.exception.InvalidParameterException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -179,5 +181,57 @@ public class OperatorTest {
         
         String rightString = "Bob";
         assertTrue(operator.compare(left, rightString));
+    }
+
+    @Test
+    public void inTest() throws Exception {
+        Operator operator = Operator.IN;
+
+        Long[] longArray = new Long[]{5l, 10l, 15l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 10l;
+        assertTrue(operator.compare(left, longSet));
+
+        left = 20l;
+        assertFalse(operator.compare(left, longSet));
+
+        String leftString = "10l";
+        assertFalse(operator.compare(leftString, longSet));
+    }
+
+    @Test
+    public void inTestException() throws Exception {
+        exception.expect(InvalidParameterException.class);
+
+        Operator operator = Operator.IN;
+
+        operator.compare("string", "not a set");
+    }
+
+    @Test
+    public void notInTest() throws Exception {
+        Operator operator = Operator.NOT_IN;
+
+        Long[] longArray = new Long[]{5l, 10l, 15l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 10l;
+        assertFalse(operator.compare(left, longSet));
+
+        left = 20l;
+        assertTrue(operator.compare(left, longSet));
+
+        String leftString = "10l";
+        assertTrue(operator.compare(leftString, longSet));
+    }
+
+    @Test
+    public void notInTestException() throws Exception {
+        exception.expect(InvalidParameterException.class);
+
+        Operator operator = Operator.NOT_IN;
+
+        operator.compare("string", "not a set");
     }
 }
