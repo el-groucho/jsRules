@@ -24,7 +24,6 @@
 package org.grouchotools.jsrules;
 
 import org.grouchotools.jsrules.exception.InvalidParameterException;
-import org.grouchotools.jsrules.impl.AllTrueRulesetListExecutorImpl;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -35,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.grouchotools.jsrules.impl.FirstTrueRulesetListExecutorImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -45,18 +45,18 @@ import static org.mockito.Mockito.when;
  * @author Paul
  */
 @RunWith(MockitoJUnitRunner.class)
-public class AllTrueRulesetListExecutorTest {
+public class FirstTrueRulesetListExecutorTest {
     private RulesetExecutor<String> executor;
-    private String responseMock = "mock";
+    private final String responseMock = "mock";
 
     @org.junit.Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private List<RulesetExecutor> rulesetListMock;
+    private List<RulesetExecutor<String>> rulesetListMock;
     private Map<String, Object> parameters;
 
     @Mock
-    private RulesetExecutor rulesetExecutorMock;
+    private RulesetExecutor<String> rulesetExecutorMock;
 
     @BeforeClass
     public static void setUpClass() {
@@ -71,7 +71,7 @@ public class AllTrueRulesetListExecutorTest {
         rulesetListMock = new ArrayList<>();
         parameters = new HashMap<>();
 
-        executor = new AllTrueRulesetListExecutorImpl<>(rulesetListMock, responseMock);
+        executor = new FirstTrueRulesetListExecutorImpl<>(rulesetListMock);
     }
 
     @After
@@ -79,12 +79,12 @@ public class AllTrueRulesetListExecutorTest {
     }
 
     @Test
-    public void executeAllTrueRulesetListEmptyTest() throws Exception {
-        assertEquals(responseMock, executor.execute(parameters));
+    public void executeFirstTrueRulesetListEmptyTest() throws Exception {
+        assertNull(executor.execute(parameters));
     }
 
     @Test
-    public void executeAllTrueRulesetListInvalidParametersTest() throws Exception {
+    public void executeFirstTrueRulesetListInvalidParametersTest() throws Exception {
         exception.expect(InvalidParameterException.class);
 
         when(rulesetExecutorMock.execute(parameters)).thenThrow(new InvalidParameterException());
@@ -95,26 +95,22 @@ public class AllTrueRulesetListExecutorTest {
     }
 
     @Test
-    public void executeAllTrueRulesetListValidParametersTrueTest() throws Exception {
-        Object mock = new Object();
-
+    public void executeFirstTrueRulesetListValidParametersTrueTest() throws Exception {
         parameters.put("left", 21l);
         parameters.put("right", 10l);
 
-        when(rulesetExecutorMock.execute(parameters)).thenReturn(mock);
+        when(rulesetExecutorMock.execute(parameters)).thenReturn(responseMock);
         rulesetListMock.add(rulesetExecutorMock);
 
         assertEquals(responseMock, executor.execute(parameters));
     }
     
     @Test
-    public void executeAllTrueRulesetListValidParametersFalseTest() throws Exception {
-        Object mock = new Object();
-
+    public void executeFirstTrueRulesetListValidParametersFalseTest() throws Exception {
         parameters.put("left", 21l);
         parameters.put("right", 10l);
 
-        when(rulesetExecutorMock.execute(parameters)).thenReturn(mock);
+        when(rulesetExecutorMock.execute(parameters)).thenReturn(responseMock);
         rulesetListMock.add(rulesetExecutorMock);
 
         Map<String, Object> otherParameters = new HashMap<>();
@@ -125,30 +121,28 @@ public class AllTrueRulesetListExecutorTest {
     }
 
     @Test
-    public void executeRulesetListFirstFalse() throws Exception {
-        Object mockResponse = new Object();
-        when(rulesetExecutorMock.execute(parameters)).thenReturn(mockResponse);
+    public void executeRulesetListFirstTrue() throws Exception {
+        when(rulesetExecutorMock.execute(parameters)).thenReturn(responseMock);
 
         RulesetExecutor rulesetExecutorMock2 = mock(RulesetExecutor.class);
-        when(rulesetExecutorMock.execute(parameters)).thenReturn(null);
+        when(rulesetExecutorMock2.execute(parameters)).thenReturn("mock 2");
 
         rulesetListMock.add(rulesetExecutorMock);
         rulesetListMock.add(rulesetExecutorMock2);
 
-        assertNull(executor.execute(parameters));
+        assertEquals(responseMock, executor.execute(parameters));
     }
     
     @Test
-    public void executeRulesetListSecondFalse() throws Exception {
-        Object mockResponse = new Object();
-        when(rulesetExecutorMock.execute(parameters)).thenReturn(mockResponse);
+    public void executeRulesetListSecondTrue() throws Exception {
+        when(rulesetExecutorMock.execute(parameters)).thenReturn(responseMock);
 
         RulesetExecutor rulesetExecutorMock2 = mock(RulesetExecutor.class);
-        when(rulesetExecutorMock.execute(parameters)).thenReturn(null);
+        when(rulesetExecutorMock2.execute(parameters)).thenReturn(null);
 
         rulesetListMock.add(rulesetExecutorMock2);
         rulesetListMock.add(rulesetExecutorMock);
 
-        assertNull(executor.execute(parameters));
+        assertEquals(responseMock, executor.execute(parameters));
     }
 }
