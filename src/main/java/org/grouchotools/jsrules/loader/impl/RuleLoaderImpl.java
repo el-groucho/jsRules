@@ -37,8 +37,10 @@ import org.grouchotools.jsrules.loader.RuleLoader;
  * @author Paul
  */
 public class RuleLoaderImpl implements RuleLoader {
-    private final ParamLoader paramLoader = new ParamLoaderImpl();
-    private final ResponseLoader responseLoader = new ResponseLoaderImpl();
+    
+    // these are not final so that they can be injected for unit testing
+    private ParamLoader paramLoader = new ParamLoaderImpl();
+    private ResponseLoader responseLoader = new ResponseLoaderImpl();
             
     @Override
     public Rule load(RuleConfig config) throws InvalidConfigException {

@@ -23,11 +23,13 @@
  */
 package org.grouchotools.jsrules.config;
 
+import org.grouchotools.jsrules.util.JsonBean;
+
 /**
  *
  * @author Paul
  */
-public class ParamConfig implements Config {
+public class ParamConfig extends JsonBean implements Config  {
     private String parameterName;
     private String parameterClass;
     private String parameterStaticValue;

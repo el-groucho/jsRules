@@ -30,7 +30,6 @@ import org.grouchotools.jsrules.config.ParamConfig;
 import org.grouchotools.jsrules.config.ResponseConfig;
 import org.grouchotools.jsrules.config.RuleConfig;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
-import org.grouchotools.jsrules.loader.RuleLoader;
 import org.grouchotools.jsrules.loader.impl.RuleLoaderImpl;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -38,8 +37,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
  *
@@ -52,8 +54,16 @@ public class RuleLoaderTest {
     private final String ruleName = "Left is greater than 10";
     private final String leftParameterName = "left";
     private final String rightParameterName = "right";
+    private final Boolean response = true;
     
-    private final RuleLoader ruleLoader = new RuleLoaderImpl();
+    @InjectMocks
+    private RuleLoaderImpl ruleLoader;
+    
+    @Mock
+    private ParamLoader paramLoader;
+    
+    @Mock
+    private ResponseLoader responseLoader;
     
     public RuleLoaderTest() {
     }
@@ -67,7 +77,14 @@ public class RuleLoaderTest {
     }
     
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        initMocks(this);
+        
+        when(paramLoader.load(getLeftParamConfig())).
+                thenReturn(getLeftRuleParameter());
+        when(paramLoader.load(getRightParamConfig())).
+                thenReturn(getRightRuleParameter());
+        when(responseLoader.load(getResponseConfig())).thenReturn(response);
     }
     
     @After
@@ -94,39 +111,59 @@ public class RuleLoaderTest {
     }
     
     private RuleConfig getRuleConfig() {
-        String leftParameterClass = "Long";
-        String leftParameterStaticValue = null;
-        String rightParameterClass = "Long";
-        String rightParameterStaticValue = "10";
         String operator = "GT";
-        String response = "true";
-        String responseClass = "Boolean";
+               
+        ResponseConfig responseConfig = getResponseConfig();
         
-        ParamConfig leftParamConfig = new ParamConfig(leftParameterName, 
-                leftParameterClass, leftParameterStaticValue);
-        ParamConfig rightParamConfig = new ParamConfig(rightParameterName, 
-                rightParameterClass, rightParameterStaticValue);
-        
-        ResponseConfig responseConfig = new ResponseConfig(response, 
-                responseClass);
-        
-        RuleConfig ruleConfig = new RuleConfig(ruleName, leftParamConfig, 
-                operator, rightParamConfig, responseConfig);
+        RuleConfig ruleConfig = new RuleConfig(ruleName, getLeftParamConfig(), 
+                operator, getRightParamConfig(), responseConfig);
         
         return ruleConfig;
     }
     
+    private ParamConfig getLeftParamConfig() {
+        String leftParameterClass = "Long";
+        String leftParameterStaticValue = null;
+        
+        ParamConfig leftParamConfig = new ParamConfig(leftParameterName, 
+                leftParameterClass, leftParameterStaticValue);
+        
+        return leftParamConfig;
+    }
+    
+    private ParamConfig getRightParamConfig() {
+        String rightParameterClass = "Long";
+        String rightParameterStaticValue = "10";
+        
+        ParamConfig rightParamConfig = new ParamConfig(rightParameterName, 
+                rightParameterClass, rightParameterStaticValue);
+        
+        return rightParamConfig;
+    }
+    
     private Rule getRule() {
-        Parameter<Long> leftParameter = new Parameter<>(leftParameterName, 
-                Long.class);
+        Parameter<Long> leftParameter = getLeftRuleParameter();
         Operator operator = Operator.GT;
-        Parameter<Long> rightParameter = new Parameter<>(rightParameterName, 
-                Long.class, 10l);
-        Boolean response = true;
+        Parameter<Long> rightParameter = getRightRuleParameter();
         
         Rule rule = new Rule(ruleName, leftParameter, operator, rightParameter, 
                 response);
         
         return rule;
+    }
+    
+    private Parameter<Long> getLeftRuleParameter() {
+        return new Parameter<>(leftParameterName, Long.class);
+    }
+    
+    private Parameter<Long> getRightRuleParameter() {
+        return new Parameter<>(rightParameterName, Long.class, 10l);
+    }
+    
+    private ResponseConfig getResponseConfig() {
+        String responseString = "true";
+        String responseClass = "Boolean";
+        
+        return new ResponseConfig(responseString, responseClass);
     }
 }

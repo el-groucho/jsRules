@@ -23,11 +23,13 @@
  */
 package org.grouchotools.jsrules.config;
 
+import org.grouchotools.jsrules.util.JsonBean;
+
 /**
  *
  * @author Paul
  */
-public class ResponseConfig implements Config {
+public class ResponseConfig extends JsonBean implements Config {
     private String response;
     private String responseClass;
     
