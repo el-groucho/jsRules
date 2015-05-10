@@ -21,22 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.grouchotools.jsrules.util;
+package org.grouchotools.jsrules.loader;
 
+import org.grouchotools.jsrules.Parameter;
+import org.grouchotools.jsrules.config.ParamConfig;
+import org.grouchotools.jsrules.config.ResponseConfig;
+import org.grouchotools.jsrules.exception.InvalidConfigException;
+import org.grouchotools.jsrules.loader.impl.ParamLoaderImpl;
+import org.grouchotools.jsrules.loader.impl.ResponseLoaderImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 /**
  *
  * @author Paul
  */
-public class ClassHandlerTest {
+public class ResponseLoaderTest {
+    @Rule
+    public ExpectedException exception= ExpectedException.none();
     
-    public ClassHandlerTest() {
+    private final ResponseLoader responseLoader = new ResponseLoaderImpl();
+    
+    public ResponseLoaderTest() {
     }
     
     @BeforeClass
@@ -54,32 +66,29 @@ public class ClassHandlerTest {
     @After
     public void tearDown() {
     }
-    
+
     @Test
-    public void LongClassTest() {
-        ClassHandler handler = ClassHandler.LONG;
-        
-        assertEquals(Long.class, handler.getMyClass());
+    public void loadResponseTest() throws Exception {
+        ResponseConfig responseConfig = new ResponseConfig("25", "long");
+                
+        assertEquals(25l, responseLoader.load(responseConfig));
     }
     
     @Test
-    public void LongConversionTest() {
-        ClassHandler handler = ClassHandler.LONG;
+    public void loadResponseInvalidClassTest() throws Exception {
+        exception.expect(InvalidConfigException.class);
         
-        assertEquals(10l, handler.convertString("10"));
+        ResponseConfig responseConfig = new ResponseConfig("25", "loong");
+        
+        responseLoader.load(responseConfig);
     }
     
     @Test
-    public void BooleanClassTest() {
-        ClassHandler handler = ClassHandler.BOOLEAN;
+    public void loadResponseInvalidValueTest() throws Exception {
+        exception.expect(InvalidConfigException.class);
         
-        assertEquals(Boolean.class, handler.getMyClass());
-    }
-    
-    @Test
-    public void BooleanConversionTest() {
-        ClassHandler handler = ClassHandler.BOOLEAN;
+        ResponseConfig responseConfig = new ResponseConfig("NaN", "long");
         
-        assertEquals(true, handler.convertString("true"));
+        responseLoader.load(responseConfig);
     }
 }

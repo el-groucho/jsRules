@@ -5,50 +5,51 @@
  */
 package org.grouchotools.jsrules;
 
+import org.grouchotools.jsrules.util.JsonBean;
 
 /**
  *
  * @author Paul
  * @param <T>
+ * @param <P>
  */
-public class Rule<T> {
-       
-    private Parameter leftParameter;
-    private Operator operator;
-    private Parameter rightParameter;
+public class Rule<T, P> extends JsonBean {
     
-    private T response;
+    private final String ruleName;
+    
+    private final Parameter<P> leftParameter;
+    private final Operator operator;
+    private final Parameter<P> rightParameter;
+    
+    private final T response;
+
+    public Rule(String ruleName, Parameter<P> leftParameter, Operator operator, 
+            Parameter<P> rightParameter, T response) {
+        this.ruleName = ruleName;
+        this.leftParameter = leftParameter;
+        this.operator = operator;
+        this.rightParameter = rightParameter;
+        this.response = response;
+    }
+
+    public String getRuleName() {
+        return ruleName;
+    }
     
     public Operator getOperator() {
         return operator;
-    }
-
-    public void setOperator(Operator operator) {
-        this.operator = operator;
     }
 
     public Parameter getLeftParameter() {
         return leftParameter;
     }
 
-    public void setLeftParameter(Parameter leftParameter) {
-        this.leftParameter = leftParameter;
-    }
-
     public Parameter getRightParameter() {
         return rightParameter;
     }
 
-    public void setRightParameter(Parameter rightParameter) {
-        this.rightParameter = rightParameter;
-    }
-
     public T getResponse() {
         return response;
-    }
-
-    public void setResponse(T response) {
-        this.response = response;
     }
    
 }

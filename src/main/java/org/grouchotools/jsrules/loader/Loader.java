@@ -21,36 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.grouchotools.jsrules.util;
+package org.grouchotools.jsrules.loader;
+
+import org.grouchotools.jsrules.config.Config;
+import org.grouchotools.jsrules.exception.InvalidConfigException;
 
 /**
  *
  * @author Paul
+ * @param <T>
+ * @param <C>
  */
-public enum ClassHandler {
-    LONG {
-        @Override
-        public Class getMyClass() {
-            return Long.class;
-        }
-
-        @Override
-        public Long convertString(String string) {
-            return Long.parseLong(string);
-        }
-    },
-    BOOLEAN {
-        @Override
-        public Class getMyClass() {
-            return Boolean.class;
-        }
-
-        @Override
-        public Boolean convertString(String string) {
-            return Boolean.parseBoolean(string);
-        }
-    };
-    
-    public abstract Class getMyClass();
-    public abstract <T> T convertString(String string);
+public interface Loader<T, C extends Config> {
+    T load(C config) throws InvalidConfigException;
 }

@@ -5,11 +5,16 @@
  */
 package org.grouchotools.jsrules;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.grouchotools.jsrules.util.JsonBean;
+
 /**
  *
  * @author Paul
+ * @param <T>
  */
-public class Parameter<T> {
+public class Parameter<T> extends JsonBean {
     public Parameter(String name, Class<T> klasse) {
         this.name = name;
         this.klasse = klasse;
@@ -37,4 +42,5 @@ public class Parameter<T> {
     public T getStaticValue() {
         return staticValue;
     }
+   
 }

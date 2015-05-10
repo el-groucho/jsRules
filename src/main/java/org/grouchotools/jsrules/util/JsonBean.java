@@ -23,34 +23,39 @@
  */
 package org.grouchotools.jsrules.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
- *
+ * Extend this class for a json-backed bean -- works well for comparing simple
+ * POJOs
+ * 
  * @author Paul
  */
-public enum ClassHandler {
-    LONG {
-        @Override
-        public Class getMyClass() {
-            return Long.class;
-        }
-
-        @Override
-        public Long convertString(String string) {
-            return Long.parseLong(string);
-        }
-    },
-    BOOLEAN {
-        @Override
-        public Class getMyClass() {
-            return Boolean.class;
-        }
-
-        @Override
-        public Boolean convertString(String string) {
-            return Boolean.parseBoolean(string);
-        }
-    };
+public abstract class JsonBean {
+    @Override
+    public boolean equals(Object that) {
+        return that.hashCode() == this.hashCode() && 
+                that.getClass() == this.getClass();
+    }
     
-    public abstract Class getMyClass();
-    public abstract <T> T convertString(String string);
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        
+        String json;
+        
+        try {
+            json = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException ex) {
+            json = "";
+        }
+        
+        return json;
+    }
 }

@@ -29,7 +29,7 @@ public class RuleExecutorTest {
     public ExpectedException exception= ExpectedException.none();
     
     @Mock
-    Rule<String> ruleMock;
+    Rule<String, Long> ruleMock;
     
     @BeforeClass
     public static void setUpClass() {

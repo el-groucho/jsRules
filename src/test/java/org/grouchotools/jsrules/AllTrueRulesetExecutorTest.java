@@ -55,7 +55,7 @@ public class AllTrueRulesetExecutorTest {
     public ExpectedException exception= ExpectedException.none();
 
     @Mock
-    Rule<String> ruleMock;
+    Rule<String, Long> ruleMock;
 
     private List<RuleExecutor> ruleListMock;
     

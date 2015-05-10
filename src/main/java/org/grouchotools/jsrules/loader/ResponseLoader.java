@@ -21,36 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.grouchotools.jsrules.util;
+package org.grouchotools.jsrules.loader;
+
+import org.grouchotools.jsrules.config.ResponseConfig;
 
 /**
  *
  * @author Paul
  */
-public enum ClassHandler {
-    LONG {
-        @Override
-        public Class getMyClass() {
-            return Long.class;
-        }
-
-        @Override
-        public Long convertString(String string) {
-            return Long.parseLong(string);
-        }
-    },
-    BOOLEAN {
-        @Override
-        public Class getMyClass() {
-            return Boolean.class;
-        }
-
-        @Override
-        public Boolean convertString(String string) {
-            return Boolean.parseBoolean(string);
-        }
-    };
+public interface ResponseLoader<T> extends Loader<T, ResponseConfig> {
     
-    public abstract Class getMyClass();
-    public abstract <T> T convertString(String string);
 }

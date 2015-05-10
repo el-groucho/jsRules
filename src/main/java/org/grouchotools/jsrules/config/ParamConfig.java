@@ -21,36 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.grouchotools.jsrules.util;
+package org.grouchotools.jsrules.config;
 
 /**
  *
  * @author Paul
  */
-public enum ClassHandler {
-    LONG {
-        @Override
-        public Class getMyClass() {
-            return Long.class;
-        }
-
-        @Override
-        public Long convertString(String string) {
-            return Long.parseLong(string);
-        }
-    },
-    BOOLEAN {
-        @Override
-        public Class getMyClass() {
-            return Boolean.class;
-        }
-
-        @Override
-        public Boolean convertString(String string) {
-            return Boolean.parseBoolean(string);
-        }
-    };
+public class ParamConfig implements Config {
+    private String parameterName;
+    private String parameterClass;
+    private String parameterStaticValue;
     
-    public abstract Class getMyClass();
-    public abstract <T> T convertString(String string);
+    public ParamConfig(String parameterName, String parameterClass, 
+            String parameterStaticValue) {
+        this.parameterName = parameterName;
+        this.parameterClass = parameterClass;
+        this.parameterStaticValue = parameterStaticValue;
+    }
+
+    public String getParameterName() {
+        return parameterName;
+    }
+
+    public void setParameterName(String parameterName) {
+        this.parameterName = parameterName;
+    }
+
+    public String getParameterClass() {
+        return parameterClass;
+    }
+
+    public void setParameterClass(String parameterClass) {
+        this.parameterClass = parameterClass;
+    }
+
+    public String getParameterStaticValue() {
+        return parameterStaticValue;
+    }
+
+    public void setParameterStaticValue(String parameterStaticValue) {
+        this.parameterStaticValue = parameterStaticValue;
+    }
+    
 }

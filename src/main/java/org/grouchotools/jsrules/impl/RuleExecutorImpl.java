@@ -17,13 +17,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author Paul
  * @param <T>
+ * @param <P>
  */
-public class RuleExecutorImpl<T> extends Executor implements RuleExecutor<T> {
+public class RuleExecutorImpl<T, P> extends Executor implements RuleExecutor<T> {
     private static final Logger LOG = LoggerFactory.getLogger(RuleExecutorImpl.class);
             
-    private final Rule<T> rule;
+    private final Rule<T, P> rule;
     
-    public RuleExecutorImpl(Rule<T> rule) {
+    public RuleExecutorImpl(Rule<T, P> rule) {
         this.rule = rule;
     }
     

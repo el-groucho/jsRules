@@ -21,36 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.grouchotools.jsrules.util;
+package org.grouchotools.jsrules.exception;
 
 /**
  *
  * @author Paul
  */
-public enum ClassHandler {
-    LONG {
-        @Override
-        public Class getMyClass() {
-            return Long.class;
-        }
+public class InvalidConfigException extends Exception {
 
-        @Override
-        public Long convertString(String string) {
-            return Long.parseLong(string);
-        }
-    },
-    BOOLEAN {
-        @Override
-        public Class getMyClass() {
-            return Boolean.class;
-        }
+    public InvalidConfigException() {
+    }
 
-        @Override
-        public Boolean convertString(String string) {
-            return Boolean.parseBoolean(string);
-        }
-    };
+    public InvalidConfigException(String message) {
+        super(message);
+    }
+
+    public InvalidConfigException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public InvalidConfigException(Throwable cause) {
+        super(cause);
+    }
+
+    public InvalidConfigException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
     
-    public abstract Class getMyClass();
-    public abstract <T> T convertString(String string);
 }
