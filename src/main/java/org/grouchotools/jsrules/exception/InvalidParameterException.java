@@ -9,7 +9,7 @@ package org.grouchotools.jsrules.exception;
  *
  * @author Paul
  */
-public class InvalidParameterException extends Exception {
+public class InvalidParameterException extends JsRulesException {
 
     public InvalidParameterException() {
     }

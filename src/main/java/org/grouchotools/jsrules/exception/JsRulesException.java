@@ -27,24 +27,24 @@ package org.grouchotools.jsrules.exception;
  *
  * @author Paul
  */
-public class InvalidConfigException extends JsRulesException {
+public abstract class JsRulesException extends Exception {
 
-    public InvalidConfigException() {
+    public JsRulesException() {
     }
 
-    public InvalidConfigException(String message) {
+    public JsRulesException(String message) {
         super(message);
     }
 
-    public InvalidConfigException(String message, Throwable cause) {
+    public JsRulesException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public InvalidConfigException(Throwable cause) {
+    public JsRulesException(Throwable cause) {
         super(cause);
     }
 
-    public InvalidConfigException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public JsRulesException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
     

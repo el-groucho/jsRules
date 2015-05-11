@@ -26,6 +26,7 @@ package org.grouchotools.jsrules.loader.impl;
 import org.grouchotools.jsrules.Parameter;
 import org.grouchotools.jsrules.config.ParamConfig;
 import org.grouchotools.jsrules.config.ResponseConfig;
+import org.grouchotools.jsrules.exception.ClassHandlerException;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
 import org.grouchotools.jsrules.loader.ParamLoader;
 import org.grouchotools.jsrules.loader.ResponseLoader;
@@ -57,7 +58,7 @@ public class ResponseLoaderImpl<T> implements ResponseLoader<T> {
         T response;
         try {
             response = handler.convertString(responseValue);
-        } catch (IllegalArgumentException ex) {
+        } catch (ClassHandlerException|IllegalArgumentException ex) {
             throw new InvalidConfigException(responseValue+" is not a valid "+responseClassName, ex);
         }
         

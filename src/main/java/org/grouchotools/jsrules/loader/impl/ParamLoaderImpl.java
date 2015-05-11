@@ -25,6 +25,7 @@ package org.grouchotools.jsrules.loader.impl;
 
 import org.grouchotools.jsrules.Parameter;
 import org.grouchotools.jsrules.config.ParamConfig;
+import org.grouchotools.jsrules.exception.ClassHandlerException;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
 import org.grouchotools.jsrules.loader.ParamLoader;
 import org.grouchotools.jsrules.util.ClassHandler;
@@ -56,7 +57,7 @@ public class ParamLoaderImpl implements ParamLoader {
         if (paramStaticValue != null) {
             try {
                 paramStaticObject = handler.convertString(paramStaticValue);
-            } catch (IllegalArgumentException ex) {
+            } catch (ClassHandlerException|IllegalArgumentException ex) {
                 throw new InvalidConfigException(paramStaticValue+" is not a valid "+parameterClassName, ex);
             }
         }

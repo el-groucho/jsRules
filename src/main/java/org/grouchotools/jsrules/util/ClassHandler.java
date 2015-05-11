@@ -23,11 +23,40 @@
  */
 package org.grouchotools.jsrules.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.grouchotools.jsrules.exception.ClassHandlerException;
+
 /**
  *
  * @author Paul
  */
 public enum ClassHandler {
+    BOOLEAN {
+        @Override
+        public Class getMyClass() {
+            return Boolean.class;
+        }
+
+        @Override
+        public Boolean convertString(String string) {
+            return Boolean.parseBoolean(string);
+        }
+    },
+    DOUBLE {
+        @Override
+        public Class getMyClass() {
+            return Double.class;
+        }
+
+        @Override
+        public Double convertString(String string) {
+            return Double.parseDouble(string);
+        }
+    },
     LONG {
         @Override
         public Class getMyClass() {
@@ -39,18 +68,39 @@ public enum ClassHandler {
             return Long.parseLong(string);
         }
     },
-    BOOLEAN {
+    STRING {
         @Override
         public Class getMyClass() {
-            return Boolean.class;
+            return String.class;
         }
 
         @Override
-        public Boolean convertString(String string) {
-            return Boolean.parseBoolean(string);
+        public String convertString(String string) {
+            return string;
+        }
+    },
+    LONGSET {
+        @Override
+        public Class getMyClass() {
+            return Set.class;
+        }
+
+        @Override
+        public Set<Long> convertString(String string) throws ClassHandlerException {
+            ObjectMapper mapper = new ObjectMapper();
+            
+            Set<Long> longSet;
+                    
+            try {
+                longSet = mapper.readValue(string, Set.class);
+            } catch (IOException ex) {
+                throw new ClassHandlerException("Unable to convert "+string+" into a Set of Longs", ex);
+            }
+            
+            return longSet;
         }
     };
     
     public abstract Class getMyClass();
-    public abstract <T> T convertString(String string);
+    public abstract <T> T convertString(String string) throws ClassHandlerException;
 }

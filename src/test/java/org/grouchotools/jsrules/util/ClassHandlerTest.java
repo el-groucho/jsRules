@@ -23,19 +23,25 @@
  */
 package org.grouchotools.jsrules.util;
 
+import java.util.Set;
+import org.grouchotools.jsrules.exception.ClassHandlerException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 /**
  *
  * @author Paul
  */
 public class ClassHandlerTest {
-    
+    @Rule
+    public ExpectedException exception= ExpectedException.none();
+        
     public ClassHandlerTest() {
     }
     
@@ -63,10 +69,24 @@ public class ClassHandlerTest {
     }
     
     @Test
-    public void LongConversionTest() {
+    public void LongConversionTest() throws Exception {
         ClassHandler handler = ClassHandler.LONG;
         
         assertEquals(10l, handler.convertString("10"));
+    }
+    
+    @Test
+    public void DoubleClassTest() {
+        ClassHandler handler = ClassHandler.DOUBLE;
+        
+        assertEquals(Double.class, handler.getMyClass());
+    }
+    
+    @Test
+    public void DoubleConversionTest() throws Exception {
+        ClassHandler handler = ClassHandler.DOUBLE;
+        
+        assertEquals(10.2, handler.convertString("10.2"));
     }
     
     @Test
@@ -77,9 +97,51 @@ public class ClassHandlerTest {
     }
     
     @Test
-    public void BooleanConversionTest() {
+    public void BooleanConversionTest() throws Exception {
         ClassHandler handler = ClassHandler.BOOLEAN;
         
         assertEquals(true, handler.convertString("true"));
+    }
+    
+    @Test
+    public void StringClassTest() {
+        ClassHandler handler = ClassHandler.STRING;
+        
+        assertEquals(String.class, handler.getMyClass());
+    }
+    
+    @Test
+    public void StringConversionTest() throws Exception {
+        String string = "string";
+        ClassHandler handler = ClassHandler.STRING;
+        
+        assertEquals(string, handler.convertString(string));
+    }
+    
+    @Test
+    public void LongSetClassTest() {
+        ClassHandler handler = ClassHandler.LONGSET;
+        
+        assertEquals(Set.class, handler.getMyClass());
+    }
+    
+    @Test
+    public void LongSetConversionTest() throws Exception {
+        String string = "[1,2,3,4,5]";
+        ClassHandler handler = ClassHandler.LONGSET;
+        
+        Set<Long> set = handler.convertString(string);
+        
+        assertEquals(5, set.size());
+    }
+    
+    @Test
+    public void LongSetExceptionTest() throws Exception {
+        exception.expect(ClassHandlerException.class);
+        
+        String string = "not an array";
+        ClassHandler handler = ClassHandler.LONGSET;
+        
+        handler.convertString(string);
     }
 }
