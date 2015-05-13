@@ -35,6 +35,8 @@ public class JsRulesTest {
                 "}" +
                 "}";
 
+        System.out.println("Json: \n" + json);
+
         Rule rule = JsRules.loadRuleByJson(json);
 
         assertEquals(ruleName, rule.getRuleName());
@@ -45,5 +47,32 @@ public class JsRulesTest {
         exception.expect(InvalidConfigException.class);
 
         JsRules.loadRuleByJson("{ bad json");
+    }
+
+    @Test
+    public void testLoadRuleByName() throws Exception {
+        String ruleName = "GreaterThan10";
+
+        Rule rule = JsRules.loadRuleByName(ruleName);
+
+        assertEquals(ruleName, rule.getRuleName());
+    }
+
+    @Test
+    public void testLoadRuleByNameFileMissing() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        String ruleName = "BogusRuleName";
+
+        JsRules.loadRuleByName(ruleName);
+    }
+
+    @Test
+    public void testLoadRuleByNameIOError() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        String ruleName = "EmptyFile";
+
+        JsRules.loadRuleByName(ruleName);
     }
 }
