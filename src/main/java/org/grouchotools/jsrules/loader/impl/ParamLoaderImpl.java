@@ -44,6 +44,9 @@ public class ParamLoaderImpl implements ParamLoader {
      */
     @Override
     public Parameter load(ParamConfig config) throws InvalidConfigException {
+        if (config == null || config.getParameterClass() == null) {
+            throw new InvalidConfigException("Parameter class must not be null");
+        }
         String parameterClassName = config.getParameterClass().toUpperCase();
         ClassHandler handler;
         try {

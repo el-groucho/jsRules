@@ -27,14 +27,10 @@ import org.grouchotools.jsrules.Parameter;
 import org.grouchotools.jsrules.config.ParamConfig;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
 import org.grouchotools.jsrules.loader.impl.ParamLoaderImpl;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Rule;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -98,6 +94,15 @@ public class ParamLoaderTest {
         
         ParamConfig paramConfig = new ParamConfig(paramName, "long", "NaN");
         
+        paramLoader.load(paramConfig);
+    }
+
+    @Test
+    public void loadNullParamClassTest() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        ParamConfig paramConfig = new ParamConfig(null, null, null);
+
         paramLoader.load(paramConfig);
     }
 }

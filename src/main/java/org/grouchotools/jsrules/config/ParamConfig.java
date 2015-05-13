@@ -33,7 +33,11 @@ public class ParamConfig extends JsonBean implements Config  {
     private String parameterName;
     private String parameterClass;
     private String parameterStaticValue;
-    
+
+    public ParamConfig() {
+
+    }
+
     public ParamConfig(String parameterName, String parameterClass, 
             String parameterStaticValue) {
         this.parameterName = parameterName;

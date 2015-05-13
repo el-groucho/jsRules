@@ -34,6 +34,10 @@ public class RuleConfig implements Config {
     private String operator;
     private ParamConfig rightParamConfig;
     private ResponseConfig responseConfig;
+
+    public RuleConfig() {
+
+    }
     
     public RuleConfig(String ruleName, ParamConfig leftParamConfig, String operator, ParamConfig rightParamConfig, ResponseConfig responseConfig) {
         this.ruleName = ruleName;

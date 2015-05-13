@@ -23,20 +23,13 @@
  */
 package org.grouchotools.jsrules.loader;
 
-import org.grouchotools.jsrules.Parameter;
-import org.grouchotools.jsrules.config.ParamConfig;
 import org.grouchotools.jsrules.config.ResponseConfig;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
-import org.grouchotools.jsrules.loader.impl.ParamLoaderImpl;
 import org.grouchotools.jsrules.loader.impl.ResponseLoaderImpl;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Rule;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -89,6 +82,15 @@ public class ResponseLoaderTest {
         
         ResponseConfig responseConfig = new ResponseConfig("NaN", "long");
         
+        responseLoader.load(responseConfig);
+    }
+
+    @Test
+    public void loadNullReponseClassTest() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        ResponseConfig responseConfig = new ResponseConfig(null, null);
+
         responseLoader.load(responseConfig);
     }
 }

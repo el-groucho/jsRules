@@ -32,7 +32,11 @@ import org.grouchotools.jsrules.util.JsonBean;
 public class ResponseConfig extends JsonBean implements Config {
     private String response;
     private String responseClass;
-    
+
+    public ResponseConfig() {
+
+    }
+
     public ResponseConfig(String response, String responseClass) {
          this.response = response;
          this.responseClass = responseClass;

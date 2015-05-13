@@ -23,12 +23,9 @@
  */
 package org.grouchotools.jsrules.loader.impl;
 
-import org.grouchotools.jsrules.Parameter;
-import org.grouchotools.jsrules.config.ParamConfig;
 import org.grouchotools.jsrules.config.ResponseConfig;
 import org.grouchotools.jsrules.exception.ClassHandlerException;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
-import org.grouchotools.jsrules.loader.ParamLoader;
 import org.grouchotools.jsrules.loader.ResponseLoader;
 import org.grouchotools.jsrules.util.ClassHandler;
 
@@ -45,7 +42,10 @@ public class ResponseLoaderImpl<T> implements ResponseLoader<T> {
      * @throws org.grouchotools.jsrules.exception.InvalidConfigException
      */
     @Override
-    public T load(ResponseConfig config) throws InvalidConfigException {        
+    public T load(ResponseConfig config) throws InvalidConfigException {
+        if (config == null || config.getResponseClass() == null) {
+            throw new InvalidConfigException("Response class must not be null");
+        }
         String responseClassName = config.getResponseClass().toUpperCase();
         ClassHandler handler;
         try {
