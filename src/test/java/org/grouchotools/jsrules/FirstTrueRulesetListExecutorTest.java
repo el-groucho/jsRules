@@ -24,6 +24,7 @@
 package org.grouchotools.jsrules;
 
 import org.grouchotools.jsrules.exception.InvalidParameterException;
+import org.grouchotools.jsrules.impl.FirstTrueRulesetListExecutorImpl;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.grouchotools.jsrules.impl.FirstTrueRulesetListExecutorImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -48,6 +48,7 @@ import static org.mockito.Mockito.when;
 public class FirstTrueRulesetListExecutorTest {
     private RulesetExecutor<String> executor;
     private final String responseMock = "mock";
+    private final String rulesetName = "mockRuleset";
 
     @org.junit.Rule
     public ExpectedException exception = ExpectedException.none();
@@ -71,7 +72,7 @@ public class FirstTrueRulesetListExecutorTest {
         rulesetListMock = new ArrayList<>();
         parameters = new HashMap<>();
 
-        executor = new FirstTrueRulesetListExecutorImpl<>(rulesetListMock);
+        executor = new FirstTrueRulesetListExecutorImpl<>(rulesetName, rulesetListMock);
     }
 
     @After
@@ -121,6 +122,7 @@ public class FirstTrueRulesetListExecutorTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void executeRulesetListFirstTrue() throws Exception {
         when(rulesetExecutorMock.execute(parameters)).thenReturn(responseMock);
 
@@ -134,6 +136,7 @@ public class FirstTrueRulesetListExecutorTest {
     }
     
     @Test
+    @SuppressWarnings("unchecked")
     public void executeRulesetListSecondTrue() throws Exception {
         when(rulesetExecutorMock.execute(parameters)).thenReturn(responseMock);
 
@@ -144,5 +147,10 @@ public class FirstTrueRulesetListExecutorTest {
         rulesetListMock.add(rulesetExecutorMock);
 
         assertEquals(responseMock, executor.execute(parameters));
+    }
+
+    @Test
+    public void rulesetNameTest() {
+        assertEquals(rulesetName, executor.getName());
     }
 }

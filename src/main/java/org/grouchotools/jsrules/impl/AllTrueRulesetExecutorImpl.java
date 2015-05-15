@@ -43,8 +43,10 @@ import java.util.Map;
 public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
     private final List<RuleExecutor> ruleSet;
     private final T response;
-    
-    public AllTrueRulesetExecutorImpl(List<RuleExecutor> ruleSet, T response) {
+    private String name;
+
+    public AllTrueRulesetExecutorImpl(String name, List<RuleExecutor> ruleSet, T response) {
+        this.name = name;
         this.ruleSet = ruleSet;
         this.response = response;
     }
@@ -73,5 +75,10 @@ public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
         }
         return result;
     }
-    
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
 }

@@ -53,6 +53,8 @@ public class RulesetLoaderImpl implements RulesetLoader {
             ruleSet.add(ruleExecutor);
         }
 
-        return rulesetTypeHandler.getRulesetExecutor(ruleSet, response);
+        String name = config.getRulesetName();
+
+        return rulesetTypeHandler.getRulesetExecutor(name, ruleSet, response);
     }
 }

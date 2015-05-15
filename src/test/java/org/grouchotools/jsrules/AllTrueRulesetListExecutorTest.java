@@ -48,6 +48,7 @@ import static org.mockito.Mockito.when;
 public class AllTrueRulesetListExecutorTest {
     private RulesetExecutor<String> executor;
     private String responseMock = "mock";
+    private final String rulesetName = "mockRuleset";
 
     @org.junit.Rule
     public ExpectedException exception = ExpectedException.none();
@@ -71,7 +72,7 @@ public class AllTrueRulesetListExecutorTest {
         rulesetListMock = new ArrayList<>();
         parameters = new HashMap<>();
 
-        executor = new AllTrueRulesetListExecutorImpl<>(rulesetListMock, responseMock);
+        executor = new AllTrueRulesetListExecutorImpl<>(rulesetName, rulesetListMock, responseMock);
     }
 
     @After
@@ -150,5 +151,10 @@ public class AllTrueRulesetListExecutorTest {
         rulesetListMock.add(rulesetExecutorMock);
 
         assertNull(executor.execute(parameters));
+    }
+
+    @Test
+    public void rulesetNameTest() {
+        assertEquals(rulesetName, executor.getName());
     }
 }

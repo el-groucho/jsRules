@@ -44,8 +44,10 @@ import java.util.Map;
  */
 public class FirstTrueRulesetExecutorImpl<T> extends Executor implements RulesetExecutor<T> {
     private final List<RuleExecutor<T>> ruleSet;
+    private String name;
 
-    public FirstTrueRulesetExecutorImpl(List<RuleExecutor<T>> ruleSet) {
+    public FirstTrueRulesetExecutorImpl(String name, List<RuleExecutor<T>> ruleSet) {
+        this.name = name;
         this.ruleSet = ruleSet;
     }
 
@@ -83,5 +85,11 @@ public class FirstTrueRulesetExecutorImpl<T> extends Executor implements Ruleset
         }
         return result;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
 
 }

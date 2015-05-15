@@ -52,6 +52,8 @@ public class FirstTrueRulesetExecutorTest {
     private final String rightName = "right";
     private final String nameName = "name";
 
+    private final String rulesetName = "mockRuleset";
+
     @org.junit.Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -83,7 +85,7 @@ public class FirstTrueRulesetExecutorTest {
         ruleListMock.add(ruleExecutorMock1);
         ruleListMock.add(ruleExecutorMock2);
 
-        executor = new FirstTrueRulesetExecutorImpl<>(ruleListMock);
+        executor = new FirstTrueRulesetExecutorImpl<>(rulesetName, ruleListMock);
     }
 
     @After
@@ -192,5 +194,10 @@ public class FirstTrueRulesetExecutorTest {
 
         parameters.put("left", differentLeft);
         assertNull(executor.execute(parameters));
+    }
+
+    @Test
+    public void rulesetNameTest() {
+        assertEquals(rulesetName, executor.getName());
     }
 }

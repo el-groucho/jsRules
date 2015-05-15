@@ -16,31 +16,31 @@ public enum RulesetTypeHandler {
     ALLTRUE {
         @Override
         @SuppressWarnings("unchecked")
-        public RulesetExecutor getRulesetExecutor(List<Executor> ruleSet, Object response) {
-            return new AllTrueRulesetExecutorImpl(ruleSet, response);
+        public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
+            return new AllTrueRulesetExecutorImpl(name, ruleSet, response);
         }
     },
     FIRSTTRUE {
         @Override
         @SuppressWarnings("unchecked")
-        public RulesetExecutor getRulesetExecutor(List<Executor> ruleSet, Object response) {
-            return new FirstTrueRulesetExecutorImpl(ruleSet);
+        public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
+            return new FirstTrueRulesetExecutorImpl(name, ruleSet);
         }
     },
     ALLTRUELIST {
         @Override
         @SuppressWarnings("unchecked")
-        public RulesetExecutor getRulesetExecutor(List<Executor> ruleSet, Object response) {
-            return new AllTrueRulesetListExecutorImpl(ruleSet, response);
+        public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
+            return new AllTrueRulesetListExecutorImpl(name, ruleSet, response);
         }
     },
     FIRSTTRUELIST {
         @Override
         @SuppressWarnings("unchecked")
-        public RulesetExecutor getRulesetExecutor(List<Executor> ruleSet, Object response) {
-            return new FirstTrueRulesetListExecutorImpl(ruleSet);
+        public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
+            return new FirstTrueRulesetListExecutorImpl(name, ruleSet);
         }
     };
 
-    public abstract RulesetExecutor getRulesetExecutor(List<Executor> ruleSet, Object response);
+    public abstract RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response);
 }

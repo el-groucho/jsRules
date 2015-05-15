@@ -1,9 +1,14 @@
 package org.grouchotools.jsrules;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.grouchotools.jsrules.config.ResponseConfig;
+import org.grouchotools.jsrules.config.RulesetConfig;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,6 +20,7 @@ public class JsRulesTest {
     public ExpectedException exception = ExpectedException.none();
 
     private JsRules jsRules;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
     public void setUp() throws Exception {
@@ -42,8 +48,6 @@ public class JsRulesTest {
                 "\"responseClass\": \"Boolean\"" +
                 "}" +
                 "}";
-
-        System.out.println("Json: \n" + json);
 
         Rule rule = jsRules.loadRuleByJson(json);
 
@@ -82,5 +86,26 @@ public class JsRulesTest {
         String ruleName = "EmptyFile";
 
         jsRules.loadRuleByName(ruleName);
+    }
+
+    @Test
+    public void testLoadRulesetJson() throws Exception {
+        String rulesetName = "mockRuleset";
+
+        RulesetConfig rulesetConfig = new RulesetConfig(rulesetName, "ALLTRUE", new ResponseConfig("true", "Boolean"),
+                new ArrayList<String>());
+
+        String json = objectMapper.writeValueAsString(rulesetConfig);
+
+        RulesetExecutor rulesetExecutor = jsRules.loadRulesetByJson(json);
+
+        assertEquals(rulesetName, rulesetExecutor.getName());
+    }
+
+    @Test
+    public void testLoadRulesetJsonInvalid() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        jsRules.loadRulesetByJson("{ bad json");
     }
 }
