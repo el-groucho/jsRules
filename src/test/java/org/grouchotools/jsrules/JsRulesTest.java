@@ -108,4 +108,31 @@ public class JsRulesTest {
 
         jsRules.loadRulesetByJson("{ bad json");
     }
+
+    @Test
+    public void testLoadRulesetByName() throws Exception {
+        String rulesetName = "MockRuleset";
+
+        RulesetExecutor ruleSet = jsRules.loadRulesetByName(rulesetName);
+
+        assertEquals(rulesetName, ruleSet.getName());
+    }
+
+    @Test
+    public void testLoadRulesetByNameFileMissing() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        String rulesetName = "BogusRuleName";
+
+        jsRules.loadRulesetByName(rulesetName);
+    }
+
+    @Test
+    public void testLoadRulesetByNameIOError() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        String rulesetName = "EmptyFile";
+
+        jsRules.loadRulesetByName(rulesetName);
+    }
 }

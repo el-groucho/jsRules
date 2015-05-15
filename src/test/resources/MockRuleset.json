@@ -1,0 +1,11 @@
+{
+  "rulesetName": "MockRuleset",
+  "rulesetType": "AllTrue",
+  "responseConfig": {
+    "response": "true",
+    "responseClass": "Boolean"
+  },
+  "components": [
+    "GreaterThan10"
+  ]
+}

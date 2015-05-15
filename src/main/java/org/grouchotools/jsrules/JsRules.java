@@ -48,7 +48,7 @@ public class JsRules {
             RuleConfig ruleConfig = OBJECT_MAPPER.readValue(stream, RuleConfig.class);
             return RULE_LOADER.load(ruleConfig);
         } catch (IOException ex) {
-            throw new InvalidConfigException("Unable to parse file: " + ruleName, ex);
+            throw new InvalidConfigException("Unable to parse rule file: " + ruleName, ex);
         }
     }
 
@@ -58,6 +58,23 @@ public class JsRules {
             return RULESET_LOADER.load(rulesetConfig);
         } catch (IOException ex) {
             throw new InvalidConfigException("Unable to parse json: " + json, ex);
+        }
+    }
+
+    public RulesetExecutor loadRulesetByName(String ruleName) throws InvalidConfigException {
+        String fileName = ruleName + ".json";
+
+        InputStream stream = ClassLoader.class.getResourceAsStream("/" + fileName);
+
+        if (stream == null) {
+            throw new InvalidConfigException("Unable to find ruleset file: " + fileName);
+        }
+
+        try {
+            RulesetConfig rulesetConfig = OBJECT_MAPPER.readValue(stream, RulesetConfig.class);
+            return RULESET_LOADER.load(rulesetConfig);
+        } catch (IOException ex) {
+            throw new InvalidConfigException("Unable to parse ruleset file: " + ruleName, ex);
         }
     }
 }
