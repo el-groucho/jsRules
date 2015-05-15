@@ -11,12 +11,12 @@ import org.grouchotools.jsrules.exception.InvalidParameterException;
  *
  * @author Paul
  */
-public interface RuleExecutor<T> {    
-    T execute(Object leftParameter, Object rightParameter) throws InvalidParameterException;
+public abstract class RuleExecutor<T> extends Executor {
+    public abstract T execute(Object leftParameter, Object rightParameter) throws InvalidParameterException;
 
-    T execute(Object leftParameter) throws InvalidParameterException;
+    public abstract T execute(Object leftParameter) throws InvalidParameterException;
 
-    Parameter getLeftParameter();
+    public abstract Parameter getLeftParameter();
 
-    Parameter getRightParameter();
+    public abstract Parameter getRightParameter();
 }

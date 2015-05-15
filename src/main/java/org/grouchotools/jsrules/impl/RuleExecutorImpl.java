@@ -5,7 +5,6 @@
  */
 package org.grouchotools.jsrules.impl;
 
-import org.grouchotools.jsrules.Executor;
 import org.grouchotools.jsrules.Parameter;
 import org.grouchotools.jsrules.Rule;
 import org.grouchotools.jsrules.RuleExecutor;
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @param <T>
  * @param <P>
  */
-public class RuleExecutorImpl<T, P> extends Executor implements RuleExecutor<T> {
+public class RuleExecutorImpl<T, P> extends RuleExecutor<T> {
     private static final Logger LOG = LoggerFactory.getLogger(RuleExecutorImpl.class);
             
     private final Rule<T, P> rule;

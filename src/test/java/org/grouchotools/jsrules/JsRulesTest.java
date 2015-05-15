@@ -1,6 +1,7 @@
 package org.grouchotools.jsrules;
 
 import org.grouchotools.jsrules.exception.InvalidConfigException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
@@ -12,6 +13,13 @@ import static org.junit.Assert.assertEquals;
 public class JsRulesTest {
     @org.junit.Rule
     public ExpectedException exception = ExpectedException.none();
+
+    private JsRules jsRules;
+
+    @Before
+    public void setUp() throws Exception {
+        jsRules = JsRules.getInstance();
+    }
 
     @Test
     public void testLoadJsonString() throws Exception {
@@ -37,7 +45,7 @@ public class JsRulesTest {
 
         System.out.println("Json: \n" + json);
 
-        Rule rule = JsRules.loadRuleByJson(json);
+        Rule rule = jsRules.loadRuleByJson(json);
 
         assertEquals(ruleName, rule.getRuleName());
     }
@@ -46,14 +54,14 @@ public class JsRulesTest {
     public void testLoadJsonInvalid() throws Exception {
         exception.expect(InvalidConfigException.class);
 
-        JsRules.loadRuleByJson("{ bad json");
+        jsRules.loadRuleByJson("{ bad json");
     }
 
     @Test
     public void testLoadRuleByName() throws Exception {
         String ruleName = "GreaterThan10";
 
-        Rule rule = JsRules.loadRuleByName(ruleName);
+        Rule rule = jsRules.loadRuleByName(ruleName);
 
         assertEquals(ruleName, rule.getRuleName());
     }
@@ -64,7 +72,7 @@ public class JsRulesTest {
 
         String ruleName = "BogusRuleName";
 
-        JsRules.loadRuleByName(ruleName);
+        jsRules.loadRuleByName(ruleName);
     }
 
     @Test
@@ -73,6 +81,6 @@ public class JsRulesTest {
 
         String ruleName = "EmptyFile";
 
-        JsRules.loadRuleByName(ruleName);
+        jsRules.loadRuleByName(ruleName);
     }
 }
