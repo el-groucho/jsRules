@@ -1,5 +1,5 @@
 {
-  "rulesetName": "InventoryRuleset",
+  "rulesetName": "CanPurchaseRulesetList",
   "rulesetType": "AllTrueList",
   "responseConfig": {
     "response": "Customer can purchase something",

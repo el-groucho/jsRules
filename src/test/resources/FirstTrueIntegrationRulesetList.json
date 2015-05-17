@@ -1,0 +1,12 @@
+{
+  "rulesetName": "FirstTrueIntegrationRulesetList",
+  "rulesetType": "FirstTrueList",
+  "responseConfig": {
+    "response": "true",
+    "responseClass": "Boolean"
+  },
+  "components": [
+    "InventoryRuleset",
+    "InBudgetRuleset"
+  ]
+}
