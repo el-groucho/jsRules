@@ -195,9 +195,6 @@ public class OperatorTest {
 
         left = 20l;
         assertFalse(operator.compare(left, longSet));
-
-        String leftString = "10l";
-        assertFalse(operator.compare(leftString, longSet));
     }
 
     @Test
@@ -221,9 +218,6 @@ public class OperatorTest {
 
         left = 20l;
         assertTrue(operator.compare(left, longSet));
-
-        String leftString = "10l";
-        assertTrue(operator.compare(leftString, longSet));
     }
 
     @Test

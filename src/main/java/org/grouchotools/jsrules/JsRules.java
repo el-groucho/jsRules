@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.grouchotools.jsrules.config.RuleConfig;
 import org.grouchotools.jsrules.config.RulesetConfig;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
+import org.grouchotools.jsrules.exception.JsRulesException;
 import org.grouchotools.jsrules.loader.RuleLoader;
 import org.grouchotools.jsrules.loader.RulesetLoader;
 import org.grouchotools.jsrules.loader.impl.RuleLoaderImpl;
@@ -11,6 +12,7 @@ import org.grouchotools.jsrules.loader.impl.RulesetLoaderImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Created by Paul Richardson 5/13/2015
@@ -76,5 +78,12 @@ public class JsRules {
         } catch (IOException ex) {
             throw new InvalidConfigException("Unable to parse ruleset file: " + ruleName, ex);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T executeRuleset(String ruleName, Map<String, Object> parameters) throws JsRulesException {
+        RulesetExecutor<T> executor = loadRulesetByName(ruleName);
+
+        return executor.execute(parameters);
     }
 }

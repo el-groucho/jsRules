@@ -1,0 +1,17 @@
+{
+  "ruleName": "GreaterThan10",
+  "leftParamConfig": {
+    "parameterName": "inventory",
+    "parameterClass": "Long"
+  },
+  "operator": "GT",
+  "rightParamConfig": {
+    "parameterName": "minimumInventory",
+    "parameterClass": "Long",
+    "parameterStaticValue": "0"
+  },
+  "responseConfig": {
+    "response": "true",
+    "responseClass": "Boolean"
+  }
+}

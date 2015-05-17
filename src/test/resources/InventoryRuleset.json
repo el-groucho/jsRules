@@ -1,0 +1,12 @@
+{
+  "rulesetName": "InventoryRuleset",
+  "rulesetType": "AllTrue",
+  "responseConfig": {
+    "response": "Item is in stock",
+    "responseClass": "String"
+  },
+  "components": [
+    "ItemIsCarriedRule",
+    "MoreThanZeroStocked"
+  ]
+}

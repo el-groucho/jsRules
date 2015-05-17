@@ -19,4 +19,6 @@ public abstract class RuleExecutor<T> extends Executor {
     public abstract Parameter getLeftParameter();
 
     public abstract Parameter getRightParameter();
+
+    public abstract Rule getRule();
 }

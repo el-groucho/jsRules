@@ -27,6 +27,8 @@ import org.grouchotools.jsrules.Parameter;
 import org.grouchotools.jsrules.RuleExecutor;
 import org.grouchotools.jsrules.RulesetExecutor;
 import org.grouchotools.jsrules.exception.InvalidParameterException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,8 @@ import java.util.Map;
  * @param <T>
  */
 public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AllTrueRulesetExecutorImpl.class);
+
     private final List<RuleExecutor> ruleSet;
     private final T response;
     private String name;
@@ -62,12 +66,16 @@ public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
             if (ruleParamRight.getStaticValue() == null) {
                 // check both parameters --failed rule checks return null
                 if (rule.execute(leftParameter, rightParameter) == null) {
+                    LOGGER.info("Rule {} failed. Left param: {}. Right param: {}", rule.getRule().getRuleName(),
+                            leftParameter, rightParameter);
                     result = null;
                     break;
                 }
             } else {
                 // check left parameter only -- failed rule checks return null
                 if (rule.execute(leftParameter) == null) {
+                    LOGGER.info("Rule {} failed. Left param: {}. Static value: {}", rule.getRule().getRuleName(),
+                            leftParameter, ruleParamRight.getStaticValue());
                     result = null;
                     break;
                 }

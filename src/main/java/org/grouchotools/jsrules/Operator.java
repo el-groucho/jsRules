@@ -57,6 +57,7 @@ public enum Operator {
     },
     IN {
         @Override
+        @SuppressWarnings("unchecked")
         public Boolean compare(Object left, Object right) throws InvalidParameterException {
             Set set;
             if (right instanceof Set) {
@@ -64,7 +65,16 @@ public enum Operator {
             } else {
                 throw new InvalidParameterException("Right parameter must be a Set");
             }
-            return set.contains(left);
+            Number leftNumber = getNumber(left);
+            boolean valueMatched = false;
+            for (Object setValueObject : set) {
+                Number setValue = getNumber(setValueObject);
+                if (setValue.doubleValue() == leftNumber.doubleValue()) {
+                    valueMatched = true;
+                    return valueMatched;
+                }
+            }
+            return valueMatched;
         }
     },
     NOT_IN {

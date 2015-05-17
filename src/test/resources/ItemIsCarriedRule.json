@@ -1,0 +1,17 @@
+{
+  "ruleName": "ItemIsCarriedRule",
+  "leftParamConfig": {
+    "parameterName": "store",
+    "parameterClass": "Long"
+  },
+  "operator": "IN",
+  "rightParamConfig": {
+    "parameterName": "storeList",
+    "parameterClass": "LongSet",
+    "parameterStaticValue": "[1, 2, 3, 5, 7]"
+  },
+  "responseConfig": {
+    "response": "true",
+    "responseClass": "Boolean"
+  }
+}

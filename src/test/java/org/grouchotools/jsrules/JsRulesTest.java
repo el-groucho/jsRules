@@ -9,8 +9,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Paul Richardson 5/13/2015
@@ -134,5 +137,14 @@ public class JsRulesTest {
         String rulesetName = "EmptyFile";
 
         jsRules.loadRulesetByName(rulesetName);
+    }
+
+    @Test
+    public void testExecuteRulesetByName() throws Exception {
+        Map<String, Object> parameters = new HashMap<>();
+
+        parameters.put("left", 15l);
+
+        assertNotNull(jsRules.executeRuleset("MockRuleset", parameters));
     }
 }

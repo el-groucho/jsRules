@@ -60,6 +60,11 @@ public class RuleExecutorImpl<T, P> extends RuleExecutor<T> {
         return rule.getRightParameter();
     }
 
+    @Override
+    public Rule getRule() {
+        return rule;
+    }
+
     private T executeRule(Object leftParameter, Object rightParameter) throws InvalidParameterException {
         validateParameter(rule.getLeftParameter().getName(), leftParameter, rule.getLeftParameter().getKlasse());
         validateParameter(rule.getRightParameter().getName(), rightParameter, rule.getRightParameter().getKlasse());

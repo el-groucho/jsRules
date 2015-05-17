@@ -179,10 +179,14 @@ public class AllTrueRulesetExecutorTest {
         String leftName = "left";
         String rightName = "right";
 
+        Rule ruleMock = mock(Rule.class);
+        when(ruleMock.getRuleName()).thenReturn("mock rule");
+
         RuleExecutor ruleExecutorMock = mock(RuleExecutor.class);
 
         when(ruleExecutorMock.getLeftParameter()).thenReturn(new Parameter<>(leftName, Long.class));
         when(ruleExecutorMock.getRightParameter()).thenReturn(new Parameter<>(rightName, Long.class, staticRight));
+        when(ruleExecutorMock.getRule()).thenReturn(ruleMock);
         when(ruleExecutorMock.execute(left)).thenReturn(responseMock);
 
         ruleListMock.add(ruleExecutorMock);
