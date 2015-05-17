@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.grouchotools.jsrules.config.ResponseConfig;
 import org.grouchotools.jsrules.config.RulesetConfig;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
@@ -22,13 +21,8 @@ public class JsRulesTest {
     @org.junit.Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private JsRules jsRules;
+    private JsRules jsRules = JsRules.getInstance();
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    @Before
-    public void setUp() throws Exception {
-        jsRules = JsRules.getInstance();
-    }
 
     @Test
     public void testLoadJsonString() throws Exception {

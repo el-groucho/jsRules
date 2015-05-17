@@ -1,0 +1,17 @@
+{
+  "ruleName": "ShirtInBudget",
+  "leftParamConfig": {
+    "parameterName": "budget",
+    "parameterClass": "Double"
+  },
+  "operator": "GT",
+  "rightParamConfig": {
+    "parameterName": "right",
+    "parameterClass": "Double",
+    "parameterStaticValue": "100.00"
+  },
+  "responseConfig": {
+    "response": "Shirt",
+    "responseClass": "String"
+  }
+}

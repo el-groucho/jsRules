@@ -12,6 +12,7 @@ import org.grouchotools.jsrules.loader.impl.RulesetLoaderImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,9 +21,14 @@ import java.util.Map;
 public class JsRules {
 
     private static final JsRules INSTANCE = new JsRules();
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final RuleLoader RULE_LOADER = new RuleLoaderImpl();
-    private static final RulesetLoader RULESET_LOADER = new RulesetLoaderImpl();
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final RuleLoader ruleLoader = new RuleLoaderImpl();
+    private final RulesetLoader rulesetLoader = new RulesetLoaderImpl(this);
+
+    // these hash maps provide rudimentory caching
+    private final Map<String, Rule> ruleMap = new HashMap<>();
+    private final Map<String, RulesetExecutor> rulesetExecutorMap = new HashMap<>();
 
     public static JsRules getInstance() {
         return INSTANCE;
@@ -30,60 +36,92 @@ public class JsRules {
 
     public Rule loadRuleByJson(String json) throws InvalidConfigException {
         try {
-            RuleConfig ruleConfig = OBJECT_MAPPER.readValue(json, RuleConfig.class);
-            return RULE_LOADER.load(ruleConfig);
+            RuleConfig ruleConfig = objectMapper.readValue(json, RuleConfig.class);
+            return getRule(ruleConfig);
         } catch (IOException ex) {
             throw new InvalidConfigException("Unable to parse json: " + json, ex);
         }
     }
 
     public Rule loadRuleByName(String ruleName) throws InvalidConfigException {
-        String fileName = ruleName + ".json";
+        Rule rule = ruleMap.get(ruleName);
 
-        InputStream stream = ClassLoader.class.getResourceAsStream("/" + fileName);
+        if (rule == null) {
+            String fileName = ruleName + ".json";
 
-        if (stream == null) {
-            throw new InvalidConfigException("Unable to find rule file: " + fileName);
+            InputStream stream = ClassLoader.class.getResourceAsStream("/" + fileName);
+
+            if (stream == null) {
+                throw new InvalidConfigException("Unable to find rule file: " + fileName);
+            }
+
+            try {
+                RuleConfig ruleConfig = objectMapper.readValue(stream, RuleConfig.class);
+                rule = getRule(ruleConfig);
+            } catch (IOException ex) {
+                throw new InvalidConfigException("Unable to parse rule file: " + ruleName, ex);
+            }
         }
 
-        try {
-            RuleConfig ruleConfig = OBJECT_MAPPER.readValue(stream, RuleConfig.class);
-            return RULE_LOADER.load(ruleConfig);
-        } catch (IOException ex) {
-            throw new InvalidConfigException("Unable to parse rule file: " + ruleName, ex);
-        }
+        return rule;
     }
 
     public RulesetExecutor loadRulesetByJson(String json) throws InvalidConfigException {
         try {
-            RulesetConfig rulesetConfig = OBJECT_MAPPER.readValue(json, RulesetConfig.class);
-            return RULESET_LOADER.load(rulesetConfig);
+            RulesetConfig rulesetConfig = objectMapper.readValue(json, RulesetConfig.class);
+            return getRulesetExecutor(rulesetConfig);
         } catch (IOException ex) {
             throw new InvalidConfigException("Unable to parse json: " + json, ex);
         }
     }
 
-    public RulesetExecutor loadRulesetByName(String ruleName) throws InvalidConfigException {
-        String fileName = ruleName + ".json";
+    public RulesetExecutor loadRulesetByName(String rulesetName) throws InvalidConfigException {
+        RulesetExecutor ruleset = rulesetExecutorMap.get(rulesetName);
 
-        InputStream stream = ClassLoader.class.getResourceAsStream("/" + fileName);
+        if (ruleset == null) {
+            String fileName = rulesetName + ".json";
 
-        if (stream == null) {
-            throw new InvalidConfigException("Unable to find ruleset file: " + fileName);
+            InputStream stream = ClassLoader.class.getResourceAsStream("/" + fileName);
+
+            if (stream == null) {
+                throw new InvalidConfigException("Unable to find ruleset file: " + fileName);
+            }
+
+            try {
+                RulesetConfig rulesetConfig = objectMapper.readValue(stream, RulesetConfig.class);
+                ruleset = getRulesetExecutor(rulesetConfig);
+            } catch (IOException ex) {
+                throw new InvalidConfigException("Unable to parse ruleset file: " + rulesetName, ex);
+            }
         }
 
-        try {
-            RulesetConfig rulesetConfig = OBJECT_MAPPER.readValue(stream, RulesetConfig.class);
-            return RULESET_LOADER.load(rulesetConfig);
-        } catch (IOException ex) {
-            throw new InvalidConfigException("Unable to parse ruleset file: " + ruleName, ex);
-        }
+        return ruleset;
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T executeRuleset(String ruleName, Map<String, Object> parameters) throws JsRulesException {
-        RulesetExecutor<T> executor = loadRulesetByName(ruleName);
+    public <T> T executeRuleset(String rulesetName, Map<String, Object> parameters) throws JsRulesException {
+        RulesetExecutor<T> executor = loadRulesetByName(rulesetName);
 
         return executor.execute(parameters);
+    }
+
+    private Rule getRule(RuleConfig ruleConfig) throws InvalidConfigException {
+        String ruleName = ruleConfig.getRuleName();
+        Rule rule = ruleMap.get(ruleName);
+        if (rule == null) {
+            rule = ruleLoader.load(ruleConfig);
+            ruleMap.put(ruleName, rule);
+        }
+        return rule;
+    }
+
+    private RulesetExecutor getRulesetExecutor(RulesetConfig rulesetConfig) throws InvalidConfigException {
+        String rulesetName = rulesetConfig.getRulesetName();
+        RulesetExecutor ruleset = rulesetExecutorMap.get(rulesetName);
+        if (ruleset == null) {
+            ruleset = rulesetLoader.load(rulesetConfig);
+            rulesetExecutorMap.put(rulesetName, ruleset);
+        }
+        return ruleset;
     }
 }

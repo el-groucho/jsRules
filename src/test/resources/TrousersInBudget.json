@@ -1,0 +1,17 @@
+{
+  "ruleName": "TrousersInBudget",
+  "leftParamConfig": {
+    "parameterName": "budget",
+    "parameterClass": "Double"
+  },
+  "operator": "GT",
+  "rightParamConfig": {
+    "parameterName": "right",
+    "parameterClass": "Double",
+    "parameterStaticValue": "200.00"
+  },
+  "responseConfig": {
+    "response": "Trousers",
+    "responseClass": "String"
+  }
+}

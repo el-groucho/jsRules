@@ -17,7 +17,11 @@ import java.util.List;
  * Created by Paul Richardson 5/14/2015
  */
 public class RulesetLoaderImpl implements RulesetLoader {
-    private JsRules jsRules = JsRules.getInstance();
+    private JsRules jsRules;
+
+    public RulesetLoaderImpl(JsRules jsRules) {
+        this.jsRules = jsRules;
+    }
 
     @Override
     @SuppressWarnings("unchecked")

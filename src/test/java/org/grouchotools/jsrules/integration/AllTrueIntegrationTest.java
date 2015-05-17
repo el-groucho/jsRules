@@ -33,12 +33,13 @@ import static org.junit.Assert.assertNull;
 public class AllTrueIntegrationTest {
     private final String success = "Item is in stock";
 
-    private JsRules jsRules = JsRules.getInstance();
+    private JsRules jsRules;
 
     Map<String, Object> parameters;
 
     @Before
     public void beforeEach() {
+        jsRules = new JsRules();
         parameters = new HashMap<>();
     }
 

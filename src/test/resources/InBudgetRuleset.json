@@ -1,0 +1,12 @@
+{
+  "rulesetName": "InBudgetRuleset",
+  "rulesetType": "FirstTrue",
+  "responseConfig": {
+    "response": "true",
+    "responseClass": "Boolean"
+  },
+  "components": [
+    "TrousersInBudget",
+    "ShirtInBudget"
+  ]
+}
