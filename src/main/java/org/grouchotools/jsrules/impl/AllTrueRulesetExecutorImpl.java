@@ -42,7 +42,7 @@ import java.util.Map;
  * @author Paul
  * @param <T>
  */
-public class AllTrueRulesetExecutorImpl<T> implements RulesetExecutor<T> {
+public class AllTrueRulesetExecutorImpl<T> extends RulesetExecutor<T> {
     private final static Logger LOGGER = LoggerFactory.getLogger(AllTrueRulesetExecutorImpl.class);
 
     private final List<RuleExecutor> ruleSet;

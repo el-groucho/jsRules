@@ -24,6 +24,7 @@
 package org.grouchotools.jsrules.impl;
 
 import org.grouchotools.jsrules.RulesetExecutor;
+import org.grouchotools.jsrules.RulesetListExecutor;
 import org.grouchotools.jsrules.exception.InvalidParameterException;
 
 import java.util.List;
@@ -38,7 +39,7 @@ import java.util.Map;
  * @param <T>
  * @author Paul
  */
-public class AllTrueRulesetListExecutorImpl<T> implements RulesetExecutor<T> {
+public class AllTrueRulesetListExecutorImpl<T> extends RulesetListExecutor<T> {
     private final List<RulesetExecutor> rulesetList;
     private final T response;
     private final String name;

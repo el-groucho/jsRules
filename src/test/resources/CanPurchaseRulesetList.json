@@ -1,0 +1,12 @@
+{
+  "rulesetName": "InventoryRuleset",
+  "rulesetType": "AllTrueList",
+  "responseConfig": {
+    "response": "Customer can purchase something",
+    "responseClass": "String"
+  },
+  "components": [
+    "InBudgetRuleset",
+    "InventoryRuleset"
+  ]
+}

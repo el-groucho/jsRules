@@ -31,8 +31,8 @@ import java.util.Map;
  *
  * @author Paul
  */
-public interface RulesetExecutor<T> {
-    T execute(Map<String, Object> parameters) throws InvalidParameterException;
+public abstract class RulesetExecutor<T> extends Executor {
+    public abstract T execute(Map<String, Object> parameters) throws InvalidParameterException;
 
-    String getName();
+    public abstract String getName();
 }

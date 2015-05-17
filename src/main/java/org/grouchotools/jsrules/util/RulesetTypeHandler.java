@@ -19,12 +19,22 @@ public enum RulesetTypeHandler {
         public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
             return new AllTrueRulesetExecutorImpl(name, ruleSet, response);
         }
+
+        @Override
+        public boolean isRulesetListExecutor() {
+            return false;
+        }
     },
     FIRSTTRUE {
         @Override
         @SuppressWarnings("unchecked")
         public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
             return new FirstTrueRulesetExecutorImpl(name, ruleSet);
+        }
+
+        @Override
+        public boolean isRulesetListExecutor() {
+            return false;
         }
     },
     ALLTRUELIST {
@@ -33,6 +43,11 @@ public enum RulesetTypeHandler {
         public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
             return new AllTrueRulesetListExecutorImpl(name, ruleSet, response);
         }
+
+        @Override
+        public boolean isRulesetListExecutor() {
+            return true;
+        }
     },
     FIRSTTRUELIST {
         @Override
@@ -40,7 +55,14 @@ public enum RulesetTypeHandler {
         public RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response) {
             return new FirstTrueRulesetListExecutorImpl(name, ruleSet);
         }
+
+        @Override
+        public boolean isRulesetListExecutor() {
+            return true;
+        }
     };
 
     public abstract RulesetExecutor getRulesetExecutor(String name, List<Executor> ruleSet, Object response);
+
+    public abstract boolean isRulesetListExecutor();
 }

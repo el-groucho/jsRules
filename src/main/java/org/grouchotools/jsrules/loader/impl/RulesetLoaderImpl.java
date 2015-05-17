@@ -52,9 +52,14 @@ public class RulesetLoaderImpl implements RulesetLoader {
         List<Executor> ruleSet = new ArrayList<>();
         List<String> components = config.getComponents();
         for (String component : components) {
-            Rule rule = jsRules.loadRuleByName(component);
-            RuleExecutor ruleExecutor = new RuleExecutorImpl(rule);
-            ruleSet.add(ruleExecutor);
+            if (rulesetTypeHandler.isRulesetListExecutor()) {
+                RulesetExecutor rulesetExecutor = jsRules.loadRulesetByName(component);
+                ruleSet.add(rulesetExecutor);
+            } else {
+                Rule rule = jsRules.loadRuleByName(component);
+                RuleExecutor ruleExecutor = new RuleExecutorImpl(rule);
+                ruleSet.add(ruleExecutor);
+            }
         }
 
         String name = config.getRulesetName();

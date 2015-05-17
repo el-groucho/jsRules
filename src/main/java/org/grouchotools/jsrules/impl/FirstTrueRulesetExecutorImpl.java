@@ -23,7 +23,6 @@
  */
 package org.grouchotools.jsrules.impl;
 
-import org.grouchotools.jsrules.Executor;
 import org.grouchotools.jsrules.Parameter;
 import org.grouchotools.jsrules.RuleExecutor;
 import org.grouchotools.jsrules.RulesetExecutor;
@@ -42,7 +41,7 @@ import java.util.Map;
  * @param <T>
  * @author Paul
  */
-public class FirstTrueRulesetExecutorImpl<T> extends Executor implements RulesetExecutor<T> {
+public class FirstTrueRulesetExecutorImpl<T> extends RulesetExecutor<T> {
     private final List<RuleExecutor<T>> ruleSet;
     private String name;
 
