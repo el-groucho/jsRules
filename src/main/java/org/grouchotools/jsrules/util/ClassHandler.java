@@ -24,11 +24,10 @@
 package org.grouchotools.jsrules.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.grouchotools.jsrules.exception.ClassHandlerException;
+
 import java.io.IOException;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.grouchotools.jsrules.exception.ClassHandlerException;
 
 /**
  *
@@ -42,6 +41,7 @@ public enum ClassHandler {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public Boolean convertString(String string) {
             return Boolean.parseBoolean(string);
         }
@@ -53,6 +53,7 @@ public enum ClassHandler {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public Double convertString(String string) {
             return Double.parseDouble(string);
         }
@@ -64,6 +65,7 @@ public enum ClassHandler {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public Long convertString(String string) {
             return Long.parseLong(string);
         }
@@ -75,32 +77,34 @@ public enum ClassHandler {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public String convertString(String string) {
             return string;
         }
     },
-    LONGSET {
+    NUMBERSET {
         @Override
         public Class getMyClass() {
             return Set.class;
         }
 
         @Override
-        public Set<Long> convertString(String string) throws ClassHandlerException {
-            ObjectMapper mapper = new ObjectMapper();
-            
-            Set<Long> longSet;
+        @SuppressWarnings("unchecked")
+        public Set<Number> convertString(String string) throws ClassHandlerException {
+            Set<Number> numberSet;
                     
             try {
-                longSet = mapper.readValue(string, Set.class);
+                numberSet = MAPPER.readValue(string, Set.class);
             } catch (IOException ex) {
-                throw new ClassHandlerException("Unable to convert "+string+" into a Set of Longs", ex);
+                throw new ClassHandlerException("Unable to convert " + string + " into a Set of Numbers", ex);
             }
-            
-            return longSet;
+
+            return numberSet;
         }
     };
     
     public abstract Class getMyClass();
     public abstract <T> T convertString(String string) throws ClassHandlerException;
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 }

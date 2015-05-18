@@ -23,16 +23,13 @@
  */
 package org.grouchotools.jsrules.util;
 
-import java.util.Set;
 import org.grouchotools.jsrules.exception.ClassHandlerException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Rule;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
+
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -120,7 +117,7 @@ public class ClassHandlerTest {
     
     @Test
     public void LongSetClassTest() {
-        ClassHandler handler = ClassHandler.LONGSET;
+        ClassHandler handler = ClassHandler.NUMBERSET;
         
         assertEquals(Set.class, handler.getMyClass());
     }
@@ -128,7 +125,7 @@ public class ClassHandlerTest {
     @Test
     public void LongSetConversionTest() throws Exception {
         String string = "[1,2,3,4,5]";
-        ClassHandler handler = ClassHandler.LONGSET;
+        ClassHandler handler = ClassHandler.NUMBERSET;
         
         Set<Long> set = handler.convertString(string);
         
@@ -140,7 +137,7 @@ public class ClassHandlerTest {
         exception.expect(ClassHandlerException.class);
         
         String string = "not an array";
-        ClassHandler handler = ClassHandler.LONGSET;
+        ClassHandler handler = ClassHandler.NUMBERSET;
         
         handler.convertString(string);
     }
