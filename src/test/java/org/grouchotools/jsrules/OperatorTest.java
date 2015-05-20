@@ -228,4 +228,91 @@ public class OperatorTest {
 
         operator.compare("string", "not a set");
     }
+
+    @Test
+    public void betweenTrueTest() throws Exception {
+        Operator operator = Operator.BETWEEN;
+
+        Long[] longArray = new Long[]{5l, 10l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 6l;
+        assertTrue(operator.compare(left, longSet));
+    }
+
+    @Test
+    public void betweenTrueReversedTest() throws Exception {
+        Operator operator = Operator.BETWEEN;
+
+        Long[] longArray = new Long[]{10l, 5l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 6l;
+        assertTrue(operator.compare(left, longSet));
+    }
+
+    @Test
+    public void betweenFalseTest() throws Exception {
+        Operator operator = Operator.BETWEEN;
+
+        Long[] longArray = new Long[]{5l, 10l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 4l;
+        assertFalse(operator.compare(left, longSet));
+    }
+
+    @Test
+    public void betweenExceptionTest() throws Exception {
+        exception.expect(InvalidParameterException.class);
+
+        Operator operator = Operator.BETWEEN;
+
+        operator.compare("string", "not a set");
+    }
+
+    @Test
+    public void betweenSetExceptionTest() throws Exception {
+        exception.expect(InvalidParameterException.class);
+
+        Operator operator = Operator.BETWEEN;
+
+        Long[] longArray = new Long[]{10l, 5l, 2l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 6l;
+        operator.compare(left, longSet);
+    }
+
+
+    @Test
+    public void notBetweenTest() throws Exception {
+        Operator operator = Operator.NOT_BETWEEN;
+
+        Long[] longArray = new Long[]{5l, 10l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 4l;
+        assertTrue(operator.compare(left, longSet));
+    }
+
+    @Test
+    public void notBetweenFalseTest() throws Exception {
+        Operator operator = Operator.NOT_BETWEEN;
+
+        Long[] longArray = new Long[]{5l, 10l};
+        Set<Long> longSet = new HashSet<>(Arrays.asList(longArray));
+
+        Long left = 6l;
+        assertFalse(operator.compare(left, longSet));
+    }
+
+    @Test
+    public void notBetweenExceptionTest() throws Exception {
+        exception.expect(InvalidParameterException.class);
+
+        Operator operator = Operator.NOT_BETWEEN;
+
+        operator.compare("string", "not a set");
+    }
 }

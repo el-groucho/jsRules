@@ -7,6 +7,8 @@ package org.grouchotools.jsrules;
 
 import org.grouchotools.jsrules.exception.InvalidParameterException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -59,12 +61,7 @@ public enum Operator {
         @Override
         @SuppressWarnings("unchecked")
         public Boolean compare(Object left, Object right) throws InvalidParameterException {
-            Set set;
-            if (right instanceof Set) {
-                set = (Set) right;
-            } else {
-                throw new InvalidParameterException("Right parameter must be a Set");
-            }
+            Set set = getSet(right);
             Number leftNumber = getNumber(left);
             boolean valueMatched = false;
             for (Object setValueObject : set) {
@@ -81,6 +78,43 @@ public enum Operator {
         @Override
         public Boolean compare(Object left, Object right) throws InvalidParameterException {
             return !IN.compare(left, right);
+        }
+    },
+    BETWEEN {
+        @Override
+        public Boolean compare(Object left, Object right) throws InvalidParameterException {
+            Set set = getSet(right);
+
+            if (set.size() != 2) {
+                throw new InvalidParameterException("Right parameter must be a set of 2");
+            }
+
+            List<Double> doubleList = new ArrayList<>();
+
+            for (Object obj : set) {
+                doubleList.add(getNumber(obj).doubleValue());
+            }
+
+            Double[] doubleArray = new Double[2];
+            doubleArray = doubleList.toArray(doubleArray);
+
+            Double leftDouble = getNumber(left).doubleValue();
+
+            boolean between;
+
+            if (doubleArray[0] < doubleArray[1]) {
+                between = (leftDouble >= doubleArray[0] && leftDouble <= doubleArray[1]);
+            } else {
+                between = (leftDouble >= doubleArray[1] && leftDouble <= doubleArray[0]); // no code coverage
+            }
+
+            return between;
+        }
+    },
+    NOT_BETWEEN {
+        @Override
+        public Boolean compare(Object left, Object right) throws InvalidParameterException {
+            return !BETWEEN.compare(left, right);
         }
     };
 
@@ -100,5 +134,15 @@ public enum Operator {
             obj = number.doubleValue();
         }
         return obj;
+    }
+
+    protected Set getSet(Object param) throws InvalidParameterException {
+        Set set;
+        if (param instanceof Set) {
+            set = (Set) param;
+        } else {
+            throw new InvalidParameterException("Parameter must be a Set");
+        }
+        return set;
     }
 }

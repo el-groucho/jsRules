@@ -66,16 +66,12 @@ public class AllTrueRulesetExecutorImpl<T> extends RulesetExecutor<T> {
             if (ruleParamRight.getStaticValue() == null) {
                 // check both parameters --failed rule checks return null
                 if (rule.execute(leftParameter, rightParameter) == null) {
-                    LOGGER.info("Rule {} failed. Left param: {}. Right param: {}", rule.getRule().getRuleName(),
-                            leftParameter, rightParameter);
                     result = null;
                     break;
                 }
             } else {
                 // check left parameter only -- failed rule checks return null
                 if (rule.execute(leftParameter) == null) {
-                    LOGGER.info("Rule {} failed. Left param: {}. Static value: {}", rule.getRule().getRuleName(),
-                            leftParameter, ruleParamRight.getStaticValue());
                     result = null;
                     break;
                 }
