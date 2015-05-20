@@ -50,6 +50,13 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <!-- Joda Time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda.version}</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -78,6 +85,7 @@
 
         <!-- dependencies -->
         <jackson.version>2.5.3</jackson.version>
+        <joda.version>2.7</joda.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
         <slf4j.version>1.7.12</slf4j.version>

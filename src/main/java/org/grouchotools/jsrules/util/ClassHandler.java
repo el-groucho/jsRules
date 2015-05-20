@@ -25,6 +25,7 @@ package org.grouchotools.jsrules.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.grouchotools.jsrules.exception.ClassHandlerException;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.Set;
@@ -100,6 +101,46 @@ public enum ClassHandler {
             }
 
             return numberSet;
+        }
+    },
+    DATETIME {
+        @Override
+        public Class getMyClass() {
+            return DateTime.class;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public DateTime convertString(String string) throws ClassHandlerException {
+            DateTime dateTime;
+
+            try {
+                dateTime = DateTime.parse(string);
+            } catch (IllegalArgumentException ex) {
+                throw new ClassHandlerException("Invalid date string: " + string, ex);
+            }
+
+            return dateTime;
+        }
+    },
+    DATESET {
+        @Override
+        public Class getMyClass() {
+            return Set.class;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public Set<DateTime> convertString(String string) throws ClassHandlerException {
+            Set<DateTime> dateSet;
+
+            try {
+                dateSet = MAPPER.readValue(string, Set.class);
+            } catch (IOException ex) {
+                throw new ClassHandlerException("Unable to convert " + string + " into a Set of Dates", ex);
+            }
+
+            return dateSet;
         }
     };
     

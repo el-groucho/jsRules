@@ -1,0 +1,17 @@
+{
+  "ruleName": "BetweenDatesRule",
+  "leftParamConfig": {
+    "parameterName": "date",
+    "parameterClass": "DateTime"
+  },
+  "operator": "BETWEEN",
+  "rightParamConfig": {
+    "parameterName": "dateRange",
+    "parameterClass": "DateSet",
+    "parameterStaticValue": "[\"2015-01-01\",\"2015-12-31\"]"
+  },
+  "responseConfig": {
+    "response": "true",
+    "responseClass": "Boolean"
+  }
+}

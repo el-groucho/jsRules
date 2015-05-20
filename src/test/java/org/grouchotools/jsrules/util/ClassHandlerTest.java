@@ -24,6 +24,8 @@
 package org.grouchotools.jsrules.util;
 
 import org.grouchotools.jsrules.exception.ClassHandlerException;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -139,6 +141,62 @@ public class ClassHandlerTest {
         String string = "not an array";
         ClassHandler handler = ClassHandler.NUMBERSET;
         
+        handler.convertString(string);
+    }
+
+    @Test
+    public void DateTimeClassTest() {
+        ClassHandler handler = ClassHandler.DATETIME;
+
+        assertEquals(DateTime.class, handler.getMyClass());
+    }
+
+    @Test
+    public void DateTimeConversionTest() throws Exception {
+        String string = "2015-05-20";
+        ClassHandler handler = ClassHandler.DATETIME;
+
+        DateTime dateTime = handler.convertString(string);
+
+        dateTime = dateTime.toDateTime(DateTimeZone.forOffsetHours(-6)); // allows the test to be run in any time zone
+
+        assertEquals("2015-05-20T00:00:00.000-06:00", dateTime.toString());
+    }
+
+    @Test
+    public void DateTimeExceptionTest() throws Exception {
+        exception.expect(ClassHandlerException.class);
+
+        String string = "not a date";
+        ClassHandler handler = ClassHandler.DATETIME;
+
+        handler.convertString(string);
+    }
+
+    @Test
+    public void DateSetClassTest() {
+        ClassHandler handler = ClassHandler.DATESET;
+
+        assertEquals(Set.class, handler.getMyClass());
+    }
+
+    @Test
+    public void DateSetConversionTest() throws Exception {
+        String string = "[\"2015-01-01\",\"2015-12-31\"]";
+        ClassHandler handler = ClassHandler.DATESET;
+
+        Set<Long> set = handler.convertString(string);
+
+        assertEquals(2, set.size());
+    }
+
+    @Test
+    public void DateSetExceptionTest() throws Exception {
+        exception.expect(ClassHandlerException.class);
+
+        String string = "not an array";
+        ClassHandler handler = ClassHandler.DATESET;
+
         handler.convertString(string);
     }
 }

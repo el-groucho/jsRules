@@ -1,0 +1,17 @@
+{
+  "ruleName": "BeforeDateRule",
+  "leftParamConfig": {
+    "parameterName": "leftDate",
+    "parameterClass": "DateTime"
+  },
+  "operator": "LT",
+  "rightParamConfig": {
+    "parameterName": "rightDate",
+    "parameterClass": "DateTime",
+    "parameterStaticValue": "2015-01-01"
+  },
+  "responseConfig": {
+    "response": "true",
+    "responseClass": "Boolean"
+  }
+}

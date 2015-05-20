@@ -6,6 +6,7 @@
 package org.grouchotools.jsrules;
 
 import org.grouchotools.jsrules.exception.InvalidParameterException;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,11 +122,19 @@ public enum Operator {
     public abstract Boolean compare(Object left, Object right) throws InvalidParameterException;
 
     protected Number getNumber(Object obj) throws InvalidParameterException {
+        Number number;
         if (obj instanceof Number) {
-            return (Number) obj;
+            number = (Number) obj;
         } else {
-            throw new InvalidParameterException(obj.toString() + " is not a number. Unable to compare");
+            // lets see if it's a DateTime instead
+            try {
+                DateTime dateTime = DateTime.parse(obj.toString());
+                number = dateTime.getMillis();
+            } catch (IllegalArgumentException ex) {
+                throw new InvalidParameterException(obj.toString() + " is not a number or date. Unable to compare", ex);
+            }
         }
+        return number;
     }
 
     protected Object getDoubleValue(Object obj) {
