@@ -49,7 +49,7 @@ public class JsRules {
         if (rule == null) {
             String fileName = ruleName + ".json";
 
-            InputStream stream = ClassLoader.class.getResourceAsStream("/" + fileName);
+            InputStream stream = getFileFromClasspath(fileName);
 
             if (stream == null) {
                 throw new InvalidConfigException("Unable to find rule file: " + fileName);
@@ -81,7 +81,7 @@ public class JsRules {
         if (ruleset == null) {
             String fileName = rulesetName + ".json";
 
-            InputStream stream = ClassLoader.class.getResourceAsStream("/" + fileName);
+            InputStream stream = getFileFromClasspath(fileName);
 
             if (stream == null) {
                 throw new InvalidConfigException("Unable to find ruleset file: " + fileName);
@@ -123,5 +123,9 @@ public class JsRules {
             rulesetExecutorMap.put(rulesetName, ruleset);
         }
         return ruleset;
+    }
+
+    private InputStream getFileFromClasspath(String fileName) {
+        return this.getClass().getResourceAsStream("/" + fileName);
     }
 }
