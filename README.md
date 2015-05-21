@@ -54,19 +54,22 @@ The following classes are currently available for use in both the parameters and
 + **Long**
 + **String**
 + **NumberSet**
++ **DateTime** -- backed by Joda Time, expected format "YYYY-MM-ddTHH:mm:ss.SSS-ZZ:ZZ"
 
 ### Operators
 
 The following operators are available for use in rules:
 
-+ **GT** -- greater than (works for numbers only)
-+ **LT** -- less than (works for numbers only)
-+ **GTE** -- greater than or equal (works for numbers only)
-+ **LTE** -- less than or equal (works for numbers only)
++ **GT** -- greater than (works for numbers or dates only)
++ **LT** -- less than (works for numbers or dates only)
++ **GTE** -- greater than or equal (works for numbers or dates only)
++ **LTE** -- less than or equal (works for numbers or dates only)
 + **EQ** -- equals
 + **NE** -- not equals
-+ **IN** -- in (left parameter is a number, right parameter is a set of numbers)
-+ **NOTIN** -- not in (left parameter is a number, right parameter is a set of numbers)
++ **IN** -- in (left parameter is a number or date, right parameter is a set of numbers or dates)
++ **NOT_IN** -- not in (left parameter is a number or date, right parameter is a set of numbers or dates)
++ **BETWEEN** -- between (left parameter is a number or date, right parameter is a set of two numbers or dates)
++ **NOT_BETWEEN** -- not between (left parameter is a number or date, right parameter is a set of two numbers or dates)
 
 ### Sample Rule json
 
