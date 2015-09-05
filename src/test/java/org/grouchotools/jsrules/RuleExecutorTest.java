@@ -42,11 +42,11 @@ public class RuleExecutorTest {
     @Before
     public void setUp() {
         executor = new RuleExecutorImpl<>(ruleMock);
-        
-        Parameter leftParameterMock = new Parameter("left", Long.class);
+
+        Parameter<Long> leftParameterMock = new Parameter<>("left", Long.class);
         when(ruleMock.getLeftParameter()).thenReturn(leftParameterMock);
-        
-        Parameter rightParameterMock = new Parameter("right", Long.class);
+
+        Parameter<Long> rightParameterMock = new Parameter<>("right", Long.class);
         when(ruleMock.getRightParameter()).thenReturn(rightParameterMock);
     }
     
@@ -119,4 +119,18 @@ public class RuleExecutorTest {
         executor.execute(10l);
     }
 
+    @Test
+    public void getRuleTest() throws Exception {
+        assertEquals(ruleMock, executor.getRule());
+    }
+
+    @Test
+    public void getLeftParameterTest() throws Exception {
+        assertEquals(ruleMock.getLeftParameter(), executor.getLeftParameter());
+    }
+
+    @Test
+    public void getRightParameterTest() throws Exception {
+        assertEquals(ruleMock.getRightParameter(), executor.getRightParameter());
+    }
 }

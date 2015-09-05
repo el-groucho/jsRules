@@ -29,7 +29,10 @@ import org.grouchotools.jsrules.config.ResponseConfig;
 import org.grouchotools.jsrules.config.RulesetConfig;
 import org.grouchotools.jsrules.exception.InvalidConfigException;
 import org.grouchotools.jsrules.impl.FirstTrueRulesetExecutorImpl;
+import org.grouchotools.jsrules.impl.FirstTrueRulesetListExecutorImpl;
 import org.grouchotools.jsrules.loader.impl.RulesetLoaderImpl;
+import org.grouchotools.jsrules.util.ClassHandler;
+import org.grouchotools.jsrules.util.RulesetTypeHandler;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
@@ -51,6 +54,8 @@ public class RulesetLoaderTest {
     private final String rulesetName = "MockRuleset";
     private final String rulesetType = "FirstTrue";
 
+    private RulesetConfig rulesetConfig;
+
     @InjectMocks
     private RulesetLoaderImpl rulesetLoader;
 
@@ -71,6 +76,8 @@ public class RulesetLoaderTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
+
+        rulesetConfig = new RulesetConfig(rulesetName, rulesetType, getResponseConfig(), getComponents());
     }
 
     @After
@@ -79,17 +86,14 @@ public class RulesetLoaderTest {
 
     @Test
     public void loadFromRulesetConfigTest() throws Exception {
-        RulesetConfig rulesetConfig = getRulesetConfig();
-
         RulesetExecutor rulesetExecutor = rulesetLoader.load(rulesetConfig);
+
         assertTrue(rulesetExecutor instanceof FirstTrueRulesetExecutorImpl);
     }
 
     @Test
     public void loadFromRulesetConfigMissingTypeTest() throws Exception {
         exception.expect(InvalidConfigException.class);
-
-        RulesetConfig rulesetConfig = getRulesetConfig();
 
         rulesetConfig.setRulesetType(null);
 
@@ -100,8 +104,6 @@ public class RulesetLoaderTest {
     public void loadFromRulesetConfigInvalidResponseClassTest() throws Exception {
         exception.expect(InvalidConfigException.class);
 
-        RulesetConfig rulesetConfig = getRulesetConfig();
-
         rulesetConfig.getResponseConfig().setResponseClass("bogus");
 
         rulesetLoader.load(rulesetConfig);
@@ -111,16 +113,30 @@ public class RulesetLoaderTest {
     public void loadFromRulesetConfigInvalidResponseTest() throws Exception {
         exception.expect(InvalidConfigException.class);
 
-        RulesetConfig rulesetConfig = getRulesetConfig();
-
         rulesetConfig.getResponseConfig().setResponseClass("longset");
         rulesetConfig.getResponseConfig().setResponse("not a long set");
 
         rulesetLoader.load(rulesetConfig);
     }
 
-    private RulesetConfig getRulesetConfig() {
-        return new RulesetConfig(rulesetName, rulesetType, getResponseConfig(), getComponents());
+    @Test
+    public void classHandlerExceptionTest() throws Exception {
+        exception.expect(InvalidConfigException.class);
+
+        rulesetConfig.getResponseConfig().setResponseClass(ClassHandler.DATETIME.name());
+        rulesetConfig.getResponseConfig().setResponse("bogus");
+
+        rulesetLoader.load(rulesetConfig);
+    }
+
+    @Test
+    public void rulesetListExecutorTypeTest() throws Exception {
+        rulesetConfig = new RulesetConfig(rulesetName, RulesetTypeHandler.FIRSTTRUELIST.name(), getResponseConfig(),
+                getComponents());
+
+        RulesetExecutor rulesetExecutor = rulesetLoader.load(rulesetConfig);
+
+        assertTrue(rulesetExecutor instanceof FirstTrueRulesetListExecutorImpl);
     }
 
     private ResponseConfig getResponseConfig() {

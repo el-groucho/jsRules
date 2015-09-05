@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.grouchotools</groupId>
     <artifactId>jsRules</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A simple JSON-based rules engine.</description>
@@ -57,6 +57,13 @@
             <version>${joda.version}</version>
         </dependency>
 
+        <!-- Apache Commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.version}</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -84,13 +91,14 @@
         <maven.compiler.target>1.7</maven.compiler.target>
 
         <!-- dependencies -->
-        <jackson.version>2.5.3</jackson.version>
-        <joda.version>2.7</joda.version>
+        <jackson.version>2.6.1</jackson.version>
+        <joda.version>2.8.2</joda.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
         <slf4j.version>1.7.12</slf4j.version>
 
         <!-- plugins -->
+        <commons.version>3.4</commons.version>
         <jacoco.version>0.7.4.201502262128</jacoco.version>
         <maven.gpg>1.5</maven.gpg>
         <maven.javadoc>2.9.1</maven.javadoc>

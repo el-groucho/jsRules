@@ -9,10 +9,10 @@ import org.grouchotools.jsrules.loader.RuleLoader;
 import org.grouchotools.jsrules.loader.RulesetLoader;
 import org.grouchotools.jsrules.loader.impl.RuleLoaderImpl;
 import org.grouchotools.jsrules.loader.impl.RulesetLoaderImpl;
+import org.grouchotools.tools.CacheMap;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,9 +26,13 @@ public class JsRules {
     private final RuleLoader ruleLoader = new RuleLoaderImpl();
     private final RulesetLoader rulesetLoader = new RulesetLoaderImpl(this);
 
-    // these hash maps provide rudimentory caching
-    private final Map<String, Rule> ruleMap = new HashMap<>();
-    private final Map<String, RulesetExecutor> rulesetExecutorMap = new HashMap<>();
+    // default cache values
+    private static final int CACHE_SIZE = 25;
+    private static final long TIME_TO_LIVE = 15 * 60 * 1000; // 15 minutes
+
+    // these maps provide rudimentary caching
+    private final Map<String, Rule> ruleMap = new CacheMap<>(CACHE_SIZE, TIME_TO_LIVE);
+    private final Map<String, RulesetExecutor> rulesetExecutorMap = new CacheMap<>(CACHE_SIZE, TIME_TO_LIVE);
 
     public static JsRules getInstance() {
         return INSTANCE;
