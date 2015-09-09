@@ -67,8 +67,8 @@ The following operators are available for use in rules:
 + **EQ** -- equals
 + **NE** -- not equals
 + **IN** -- in (left parameter is a number or date, right parameter is a set of numbers or dates)
-+ **NOT_IN** -- not in (left parameter is a number or date, right parameter is a set of numbers or dates)
-+ **BETWEEN** -- between (left parameter is a number or date, right parameter is a set of two numbers or dates)
++ **NOT_IN** -- not in (inclusive: left parameter is a number or date, right parameter is a set of numbers or dates)
++ **BETWEEN** -- between (inclusive: left parameter is a number or date, right parameter is a set of two numbers or dates)
 + **NOT_BETWEEN** -- not between (left parameter is a number or date, right parameter is a set of two numbers or dates)
 
 ### Sample Rule json
